@@ -34,7 +34,6 @@ export const MobileNavigatorContainer = styled.div`
 `;
 
 export const MobileNavigatorContainerItem = styled.a`
-  background-color: green;
   width: 64px;
   display: flex;
   align-items: center;
