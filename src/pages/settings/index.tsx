@@ -3,6 +3,8 @@ import { Container } from "../../atoms/Container";
 import { MenuOption, MenuSection } from "../../atoms/Menu";
 
 const SettingsPage = () => {
+  console.log("settings");
+
   return (
     <Container>
       <h1>Settings</h1>
