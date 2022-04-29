@@ -9,7 +9,7 @@ const MobileNavigator = () => {
       {menuOptions.map((option) => (
         <Link href={option.href}>
           <MobileNavigatorContainerItem key={option.id}>
-            <Icon icon={option.icon} />
+            <Icon icon={option.icon} color="white" />
           </MobileNavigatorContainerItem>
         </Link>
       ))}
