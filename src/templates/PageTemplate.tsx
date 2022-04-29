@@ -8,8 +8,10 @@ interface IProps {
 const PageTemplate = ({ children }: IProps) => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ height: "calc(100vh - 64px)" }}>{children}</div>
       <MobileNavigator />
+      <div style={{ height: "calc(100vh - calc(100vh - 100%))" }}>
+        {children}
+      </div>
     </div>
   );
 };
