@@ -7,7 +7,7 @@ export const { getClient } = registerApolloClient(() => {
     link: new HttpLink({
       uri: `${
         process.env.NODE_ENV === "production"
-          ? `https://${process.env.VERCEL_URL}`
+          ? `https://hypetribes-next.vercel.app`
           : "http://localhost:3000"
       }/api/graphql`,
     }),
