@@ -1,5 +1,3 @@
-import { Item, ItemInput } from "@/types";
-
 const resolvers = {
   Query: {
     hello: () => "Hello world!",

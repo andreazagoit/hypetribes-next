@@ -31,7 +31,7 @@ const TestPage = async () => {
           }}
         >
           {data.items.map((item: Item) => (
-            <CardItem item={item} />
+            <CardItem key={item.id} item={item} />
           ))}
         </div>
         <Regular />
