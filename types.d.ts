@@ -4,6 +4,7 @@ interface Item {
   description?: string;
   price?: number;
   releaseDate?: string;
+  comments: Comment[];
 }
 
 interface ItemInput {
@@ -11,4 +12,15 @@ interface ItemInput {
   description?: string;
   price?: number;
   releaseDate?: string;
+}
+
+interface User {
+  id: string;
+  name: string;
+}
+
+interface Comment {
+  id: string;
+  user: User;
+  text: string;
 }

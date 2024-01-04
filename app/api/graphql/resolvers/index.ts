@@ -1,36 +1,10 @@
+import { comments } from "../mock/comments";
+import { items } from "../mock/items";
+
 const resolvers = {
   Query: {
     hello: () => "Hello world!",
-    items: () => [
-      {
-        id: "1",
-        name: "Item 1",
-        description: "Description for Item 1",
-        price: 19.99,
-        releaseDate: "2022-01-01",
-      },
-      {
-        id: "2",
-        name: "Item 2",
-        description: "Description for Item 2",
-        price: 29.99,
-        releaseDate: "2022-02-01",
-      },
-      {
-        id: "3",
-        name: "Item 1",
-        description: "Description for Item 1",
-        price: 19.99,
-        releaseDate: "2022-01-01",
-      },
-      {
-        id: "4",
-        name: "Item 2",
-        description: "Description for Item 2",
-        price: 29.99,
-        releaseDate: "2022-02-01",
-      },
-    ],
+    items: () => items,
   },
   Mutation: {
     logItem: (_: any, { item }: { item: ItemInput }): Item => {
@@ -43,7 +17,22 @@ const resolvers = {
       return {
         id: "1",
         ...item,
+        comments: [],
       };
+    },
+  },
+  Item: {
+    comments: (parent: Item) => {
+      const itemComments = (parent.comments as unknown as string[]).map(
+        (commentId) => {
+          return comments.find((comment) => comment.id === commentId);
+        }
+      );
+      console.log("ciao");
+
+      console.log(itemComments);
+
+      return itemComments;
     },
   },
 };

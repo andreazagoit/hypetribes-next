@@ -23,6 +23,18 @@ const typeDefs = gql`
     description: String
     price: Float
     releaseDate: String
+    comments: [Comment]
+  }
+
+  type Comment {
+    id: ID!
+    user: User!
+    text: String!
+  }
+
+  type User {
+    id: ID!
+    name: String
   }
 `;
 
