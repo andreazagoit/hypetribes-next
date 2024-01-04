@@ -18,7 +18,7 @@ const TestPage = async () => {
     }
   `;
 
-  /* const { data } = await getClient().query({ query: query }); */
+  const { data } = await getClient().query({ query: query });
 
   return (
     <div style={{ background: "blue" }}>
@@ -30,9 +30,9 @@ const TestPage = async () => {
             gap: 20,
           }}
         >
-          {/* {data.items.map((item: Item) => (
+          {data.items.map((item: Item) => (
             <CardItem key={item.id} item={item} />
-          ))} */}
+          ))}
         </div>
         <Regular />
       </Container>
