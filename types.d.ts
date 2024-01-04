@@ -4,7 +4,7 @@ interface Item {
   description?: string;
   price?: number;
   releaseDate?: string;
-  comments: string | Comment[];
+  comments: string[] | Comment[];
 }
 
 interface ItemInput {

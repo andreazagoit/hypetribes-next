@@ -1,4 +1,4 @@
-export const items: Item = [
+export const items: Item[] = [
   {
     id: "1",
     name: "Item 1",
