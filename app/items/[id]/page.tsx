@@ -32,7 +32,7 @@ const query = gql`
 const ItemsPage = async ({ params }: IProps) => {
   const { id } = params;
   const { data } = await getClient().query({ query: query, variables: { id } });
-  const { item }: { item: Item } = data;
+  const { item } = data satisfies Item;
   return (
     <>
       <div
@@ -58,8 +58,11 @@ const ItemsPage = async ({ params }: IProps) => {
           gap: 8,
         }}
       >
-        {item.comments.map((comment) => (
-          <div style={{ border: "1px solid blue", padding: 8 }}>
+        {item.comments.map((comment: Comment) => (
+          <div
+            key={comment.id}
+            style={{ border: "1px solid blue", padding: 8 }}
+          >
             <h4>{comment.user.name}</h4>
             <p>{comment.text}</p>
           </div>

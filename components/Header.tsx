@@ -24,7 +24,7 @@ const Header = () => {
         </Link>
         <ul className="header__menu">
           {menuOptions.map((option) => (
-            <li>
+            <li key={option.path}>
               <Link
                 href={option.path}
                 style={{

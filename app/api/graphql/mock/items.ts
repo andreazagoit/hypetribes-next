@@ -31,4 +31,4 @@ export const items: Item[] = [
     releaseDate: "2022-04-01",
     comments: ["104", "105"],
   },
-];
+] satisfies Item[];

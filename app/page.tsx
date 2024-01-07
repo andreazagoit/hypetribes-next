@@ -1,26 +1,27 @@
+export const dynamic = "force-dynamic";
 import Container from "@/components/Container";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import CardItem from "./CardItem";
 
-export default async function Home() {
-  const query = gql`
-    query getItems {
-      items {
+const query = gql`
+  query items {
+    items {
+      id
+      name
+      description
+      price
+      releaseDate
+      comments {
         id
-        name
-        description
-        price
-        releaseDate
-        comments {
-          id
-          text
-        }
+        text
       }
     }
-  `;
+  }
+`;
 
-  const { data } = await getClient().query({ query: query });
+export default async function Home() {
+  const { data } = await getClient().query({ query });
   return (
     <main style={{ background: "blue" }}>
       <Container style={{ padding: 20 }}>
