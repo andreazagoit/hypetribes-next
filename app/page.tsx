@@ -5,7 +5,7 @@ import CardItem from "./CardItem";
 
 export default async function Home() {
   const query = gql`
-    query {
+    query getItems {
       items {
         id
         name

@@ -21,7 +21,7 @@ export const items: Item[] = [
     description: "Description for Item 3",
     price: 24.99,
     releaseDate: "2022-03-01",
-    comments: ["103"],
+    comments: [],
   },
   {
     id: "4",

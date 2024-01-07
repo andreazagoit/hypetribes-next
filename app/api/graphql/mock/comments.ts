@@ -17,14 +17,6 @@ export const comments = [
     text: "This is a test comment for Item 2.",
   },
   {
-    id: "103",
-    user: {
-      id: "203",
-      name: "User3",
-    },
-    text: "This is a test comment for Item 3.",
-  },
-  {
     id: "104",
     user: {
       id: "204",
