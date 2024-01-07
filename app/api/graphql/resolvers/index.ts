@@ -5,6 +5,9 @@ const resolvers = {
   Query: {
     hello: () => "Hello world!",
     items: () => items,
+    item: (_: any, { id }: { id: string }) => {
+      return items.find((item) => item.id === id);
+    },
   },
   Mutation: {
     logItem: (_: any, { item }: { item: ItemInput }): Item => {
@@ -28,10 +31,6 @@ const resolvers = {
           return comments.find((comment) => comment.id === commentId);
         }
       );
-      console.log("ciao");
-
-      console.log(itemComments);
-
       return itemComments;
     },
   },

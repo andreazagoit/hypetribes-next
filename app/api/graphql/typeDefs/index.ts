@@ -3,6 +3,7 @@ import { gql } from "graphql-tag";
 const typeDefs = gql`
   type Query {
     hello: String
+    item(id: ID!): Item
     items: [Item]
   }
 
