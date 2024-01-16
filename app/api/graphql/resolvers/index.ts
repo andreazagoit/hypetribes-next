@@ -8,7 +8,7 @@ const resolvers = {
       try {
         const items = await ItemModel.find();
         return items;
-      } catch (error) {
+      } catch (error: any) {
         throw new Error("Error fetching items: " + error.message);
       }
     },
@@ -22,7 +22,7 @@ const resolvers = {
         }
 
         return item;
-      } catch (error) {
+      } catch (error: any) {
         throw new Error(`Error getting item: ${error.message}`);
       }
     },
@@ -41,7 +41,7 @@ const resolvers = {
         });
 
         return populatedItem.comments;
-      } catch (error) {
+      } catch (error: any) {
         throw new Error(`Error getting item: ${error.message}`);
       }
     },
@@ -53,7 +53,7 @@ const resolvers = {
         const newItem = new ItemModel(itemData);
         console.log(newItem);
         return await newItem.save();
-      } catch (error) {
+      } catch (error: any) {
         throw new Error(`Error creating item: ${error.message}`);
       }
     },
@@ -76,7 +76,7 @@ const resolvers = {
         await item.save();
 
         return newComment;
-      } catch (error) {
+      } catch (error: any) {
         throw new Error(`Error creating item: ${error.message}`);
       }
     },
