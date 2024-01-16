@@ -41,7 +41,7 @@ const AddComment = ({ itemId, setComments }: IProps) => {
       // Optionally, you can perform additional actions after a successful comment addition.
       // Example: Clear the input field or show a success message.
       setCommentText("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding comment:", error.message);
     }
   };
