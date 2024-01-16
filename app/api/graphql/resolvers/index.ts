@@ -1,37 +1,93 @@
-import { comments } from "../mock/comments";
-import { items } from "../mock/items";
+import CommentModel from "../../models/CommentModel";
+import ItemModel from "../../models/itemModel";
 
 const resolvers = {
   Query: {
-    hello: () => "Hello world!",
-    items: () => items,
-    item: (_: any, { id }: { id: string }) => {
-      return items.find((item) => item.id === id);
+    items: async () => {
+      console.log("get items");
+      try {
+        const items = await ItemModel.find();
+        return items;
+      } catch (error) {
+        throw new Error("Error fetching items: " + error.message);
+      }
+    },
+    item: async (_: any, { itemId }: { itemId: string }) => {
+      try {
+        const item = await ItemModel.findById(itemId);
+
+        if (!item) {
+          console.error("Item not found");
+          return null;
+        }
+
+        return item;
+      } catch (error) {
+        throw new Error(`Error getting item: ${error.message}`);
+      }
+    },
+    comments: async (_: any, { itemId }: { itemId: string }) => {
+      try {
+        const item = await ItemModel.findById(itemId);
+
+        if (!item) {
+          console.error("Item not found");
+          return null;
+        }
+
+        const populatedItem = await item.populate({
+          path: "comments",
+          model: CommentModel,
+        });
+
+        return populatedItem.comments;
+      } catch (error) {
+        throw new Error(`Error getting item: ${error.message}`);
+      }
     },
   },
   Mutation: {
-    logItem: (_: any, { item }: { item: ItemInput }): Item => {
-      // Log the received item to the console
-      console.log("Received item:", item);
+    addItem: async (_: any, { itemData }: { itemData: ItemInput }) => {
+      console.log("creating items");
+      try {
+        const newItem = new ItemModel(itemData);
+        console.log(newItem);
+        return await newItem.save();
+      } catch (error) {
+        throw new Error(`Error creating item: ${error.message}`);
+      }
+    },
+    addComment: async (
+      _: any,
+      { itemId, text }: { itemId: string; text: string }
+    ) => {
+      try {
+        const item = await ItemModel.findById(itemId);
 
-      // Add logic to create and log the item in your data source
-      // For now, return the received item
-      /* return item as Item; */
-      return {
-        id: "1",
-        ...item,
-        comments: [],
-      };
+        if (!item) {
+          console.error("Item not found");
+          return null;
+        }
+
+        const newComment = new CommentModel({ text });
+        await newComment.save();
+
+        item.comments.push(newComment._id);
+        await item.save();
+
+        return newComment;
+      } catch (error) {
+        throw new Error(`Error creating item: ${error.message}`);
+      }
     },
   },
   Item: {
-    comments: (parent: Item) => {
-      const itemComments = (parent.comments as unknown as string[]).map(
-        (commentId) => {
-          return comments.find((comment) => comment.id === commentId);
-        }
-      );
-      return itemComments;
+    comments: async (parent: any) => {
+      await parent.populate({
+        path: "comments",
+        model: CommentModel,
+      });
+      return parent.comments;
     },
   },
 };

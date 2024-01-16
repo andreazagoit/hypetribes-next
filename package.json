@@ -13,7 +13,9 @@
     "@apollo/experimental-nextjs-app-support": "^0.5.2",
     "@apollo/server": "^4.10.0",
     "@as-integrations/next": "^3.0.0",
+    "blank-design": "^0.0.501",
     "graphql-tag": "^2.12.6",
+    "mongoose": "^8.0.4",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18"

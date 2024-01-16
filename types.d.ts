@@ -1,10 +1,19 @@
+interface Comment {
+  _id: ID!;
+  text: String!;
+  createdAt: String!;
+  updatedAt: String!;
+}
+
 interface Item {
-  id: string;
-  name: string;
-  description?: string;
-  price?: number;
-  releaseDate?: string;
-  comments: string[] | Comment[];
+  _id: ID!;
+  name: String!;
+  description: String;
+  price: Float;
+  releaseDate: String;
+  comments: [Comment];
+  createdAt: String!;
+  updatedAt: String!;
 }
 
 interface ItemInput {
@@ -14,13 +23,7 @@ interface ItemInput {
   releaseDate?: string;
 }
 
-interface User {
-  id: string;
-  name: string;
-}
-
-interface Comment {
-  id: string;
-  user: User;
-  text: string;
+interface CommentInput {
+  itemId: ID!;
+  text: String!;
 }

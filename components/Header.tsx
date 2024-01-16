@@ -9,7 +9,6 @@ import Link from "next/link";
 
 const Header = () => {
   const pathname = usePathname();
-  console.log(pathname);
 
   const menuOptions = [
     { path: "/", name: "Home" },

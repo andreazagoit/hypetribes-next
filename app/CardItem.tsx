@@ -7,7 +7,7 @@ interface IProps {
 
 const CardItem = ({ item }: IProps) => {
   return (
-    <Link href={`/items/${item.id}`}>
+    <Link href={`/items/${item._id}`}>
       <div
         style={{ border: "2px solid red", padding: 20, background: "white" }}
       >

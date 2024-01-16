@@ -2,24 +2,18 @@ import { gql } from "graphql-tag";
 
 const typeDefs = gql`
   type Query {
-    hello: String
-    item(id: ID!): Item
+    item(itemId: ID!): Item
     items: [Item]
+    comments(itemId: ID!): [Comment]
   }
 
   type Mutation {
-    logItem(item: ItemInput!): Item
-  }
-
-  input ItemInput {
-    name: String!
-    description: String
-    price: Float
-    releaseDate: String
+    addItem(itemData: ItemInput!): Item
+    addComment(itemId: ID!, text: String!): Comment
   }
 
   type Item {
-    id: ID!
+    _id: ID!
     name: String!
     description: String
     price: Float
@@ -28,14 +22,15 @@ const typeDefs = gql`
   }
 
   type Comment {
-    id: ID!
-    user: User!
+    _id: ID!
     text: String!
   }
 
-  type User {
-    id: ID!
-    name: String
+  input ItemInput {
+    name: String!
+    description: String
+    price: Float
+    releaseDate: String
   }
 `;
 

@@ -7,13 +7,13 @@ import CardItem from "./CardItem";
 const query = gql`
   query items {
     items {
-      id
+      _id
       name
       description
       price
       releaseDate
       comments {
-        id
+        _id
         text
       }
     }
@@ -33,7 +33,7 @@ export default async function Home() {
           }}
         >
           {data.items.map((item: Item) => (
-            <CardItem key={item.id} item={item} />
+            <CardItem key={item._id} item={item} />
           ))}
         </div>
       </Container>
