@@ -2,7 +2,6 @@ import Container from "@/components/Container";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import React from "react";
-import AddComment from "./AddComment";
 import Comments from "./Comments";
 
 interface IProps {
@@ -11,16 +10,20 @@ interface IProps {
   };
 }
 
-const query = gql`
-  query item($itemId: ID!) {
-    item(itemId: $itemId) {
-      _id
+const GET_ITEM = gql`
+  query GET_ITEM($id: ID!) {
+    item(id: $id) {
+      id
       name
       description
       price
       releaseDate
+      categories {
+        id
+        name
+      }
       comments {
-        _id
+        id
         text
       }
     }
@@ -30,9 +33,8 @@ const query = gql`
 const ItemsPage = async ({ params }: IProps) => {
   const { id } = params;
   const { data } = await getClient().query({
-    query: query,
-    variables: { itemId: id },
-    context: { fetchOptions: { cache: "force-cache" } },
+    query: GET_ITEM,
+    variables: { id },
   });
   const { item } = data satisfies Item;
   return (
@@ -60,7 +62,7 @@ const ItemsPage = async ({ params }: IProps) => {
           gap: 8,
         }}
       >
-        <Comments itemId={item._id} comments={item.comments} />
+        <Comments itemId={item.id} />
       </Container>
     </>
   );

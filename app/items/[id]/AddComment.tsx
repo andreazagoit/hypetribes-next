@@ -5,31 +5,22 @@ import { useRouter } from "next/navigation";
 
 interface IProps {
   itemId: string;
-  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
 const ADD_COMMENT = gql`
-  mutation AddComment($itemId: ID!, $text: String!) {
-    addComment(itemId: $itemId, text: $text) {
-      _id
+  mutation ADD_COMMENT($id: ID!, $text: String!) {
+    addComment(id: $id, text: $text) {
+      id
       text
     }
   }
 `;
 
-const AddComment = ({ itemId, setComments }: IProps) => {
+const AddComment = ({ itemId }: IProps) => {
   const [commentText, setCommentText] = useState("");
 
   const [addComment, { loading, error, client }] = useMutation(ADD_COMMENT, {
-    variables: { itemId, text: commentText },
-    onCompleted: (data) => {
-      console.log(data.addComment);
-      setComments((state) => {
-        const newState = state.push(...data.addComment);
-        console.log(newState);
-        return [data.addComment];
-      });
-    },
+    variables: { id: itemId, text: commentText },
   });
 
   const handleAddComment = async () => {

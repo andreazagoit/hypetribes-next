@@ -1,29 +1,25 @@
 interface Comment {
-  _id: ID!;
+  id: ID!;
   text: String!;
   createdAt: String!;
   updatedAt: String!;
 }
 
+interface Category {
+  id: ID!;
+  name: String!;
+  categories: [Category]!;
+  items: [Item]!;
+}
+
 interface Item {
-  _id: ID!;
+  id: ID!;
   name: String!;
   description: String;
   price: Float;
   releaseDate: String;
+  categories: [Category];
   comments: [Comment];
   createdAt: String!;
   updatedAt: String!;
-}
-
-interface ItemInput {
-  name: string;
-  description?: string;
-  price?: number;
-  releaseDate?: string;
-}
-
-interface CommentInput {
-  itemId: ID!;
-  text: String!;
 }
