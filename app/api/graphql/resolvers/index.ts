@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import CollectionModel from "../../models/CollectionModel";
 import CommentModel from "../../models/CommentModel";
 import ItemModel from "../../models/itemModel";
@@ -108,8 +107,6 @@ const getCollection = async (data: GetCollectionProps) => {
   const { key } = data;
   try {
     const collection = await CollectionModel.findOne({ key });
-    console.log("collection", collection);
-
     return collection;
   } catch (error: any) {
     throw new Error(`Error getting item: ${error.message}`);
@@ -146,11 +143,12 @@ interface AddItemProps {
   description: string;
   price: number;
   releaseDate: string;
+  images: string[];
   collections: string[];
 }
 
 const addItem = async (data: AddItemProps) => {
-  const { name, description, price, releaseDate, collections } = data;
+  const { name, description, price, releaseDate, images, collections } = data;
 
   const areCollectionsvalid = await checkCollectionsExist(collections);
 
@@ -164,6 +162,7 @@ const addItem = async (data: AddItemProps) => {
       description,
       price,
       releaseDate,
+      images,
       collections,
     });
     return await newItem.save();
@@ -308,14 +307,15 @@ const addTestData = async () => {
 
   const upcomingMoviesItems = await Promise.all(
     upcomingMovies.results.map(async (result: any) => {
-      console.log("result", result);
       const item = await addItem({
-        name: result.original_title,
+        name: result.title,
         description: result.overview,
         price: 0,
-        releaseDate: result.relase_date,
+        releaseDate: result.release_date,
+        images: [`https://image.tmdb.org/t/p/original${result.poster_path}`],
         collections: [movieUpcomingCollection.id],
       });
+      console.log("RESULT ITEM", item);
       return item;
     })
   );

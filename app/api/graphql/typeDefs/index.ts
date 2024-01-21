@@ -40,6 +40,7 @@ const typeDefs = gql`
     description: String
     price: Float
     releaseDate: String
+    images: [String]
     collections: [Collection]
     comments: [Comment]
   }

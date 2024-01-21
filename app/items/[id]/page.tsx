@@ -18,6 +18,7 @@ const GET_ITEM = gql`
       description
       price
       releaseDate
+      images
       collections {
         id
         name
@@ -48,6 +49,7 @@ const ItemsPage = async ({ params }: IProps) => {
         }}
       >
         <Container>
+          <img src={item.images[0]} style={{ height: 400, width: 300 }} />
           <h1>{item.name}</h1>
           <p>{item.description}</p>
           <p>{item.releaseDate}</p>

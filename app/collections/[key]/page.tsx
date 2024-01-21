@@ -27,6 +27,7 @@ const GET_COLLECTION = gql`
         name
         description
         releaseDate
+        images
       }
     }
   }

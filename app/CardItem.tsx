@@ -15,6 +15,10 @@ const CardItem = ({ item }: IProps) => {
           background: "white",
         }}
       >
+        <img
+          src={item.images[0] as string}
+          style={{ height: 400, width: 300 }}
+        />
         <h1>{item.name}</h1>
         <p>{item.description}</p>
         <p>{item.releaseDate}</p>

@@ -6,6 +6,7 @@ const itemSchema = new Schema<Item>(
     description: { type: String },
     price: { type: Number },
     releaseDate: { type: String },
+    images: [{ type: String }],
     collections: [{ type: Schema.Types.ObjectId, ref: "Collection" }],
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
