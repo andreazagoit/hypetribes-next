@@ -45,11 +45,17 @@ const resolvers = {
       }
     },
     collections: async (parent: any) => {
-      await parent.populate({
-        path: "collections",
-        model: CollectionModel,
-      });
-      return parent.collections;
+      console.log(parent.collections);
+      try {
+        const collections = await CollectionModel.find({
+          collections: { $in: [parent.id] },
+        });
+        return collections;
+      } catch (error: any) {
+        throw new Error(
+          `Error fetching items for collection: ${error.message}`
+        );
+      }
     },
   },
 };
@@ -218,8 +224,56 @@ const addTestData = async () => {
   await ItemModel.deleteMany({});
   await CommentModel.deleteMany({});
 
+  const getGenres = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMGE1M2VmNTc5YWYxY2Q4NTE1MGJkN2VmNmM5MGY3MCIsInN1YiI6IjY1YWM4M2VkYmQ1ODhiMDEwYjVjNjVlOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oV0BquZrShrc67aAa9AVKKMbazDZgNMbiXp8CEUFVNY",
+      },
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.themoviedb.org/3/genre/movie/list?language=en",
+        options
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+      throw error;
+    }
+  };
+
+  const { genres } = await getGenres();
+
   // Add test data
-  const collection1 = await addCollection({
+
+  const movieCollection: Collection = await addCollection({
+    name: "Movies",
+    collections: [],
+  });
+
+  console.log("movieCollection", movieCollection.id);
+
+  // Create a collection for each genre
+  const genreCollections = await Promise.all(
+    genres.map(async (genre: { id: number; name: string }) => {
+      const collection = await addCollection({
+        name: genre.name,
+        collections: [movieCollection.id],
+      });
+      return collection;
+    })
+  );
+  /* const collection1 = await addCollection({
     name: "Collection 1",
     collections: [],
   });
@@ -246,16 +300,16 @@ const addTestData = async () => {
     collections: [collection1.id],
   });
   const item3 = await addItem({
-    name: "Prodotto 2",
-    description: "Descrizione prodotto 2",
+    name: "Prodotto 3",
+    description: "Descrizione prodotto 3",
     price: 250,
     releaseDate: "20/01/2024",
     collections: [collection1.id, collection2.id, collection3.id],
-  });
+  }); */
 
   return {
-    collections: [collection1, collection2, collection3],
-    items: [item1, item2, item3],
+    collections: [],
+    items: [],
   };
 };
 

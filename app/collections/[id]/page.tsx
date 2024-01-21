@@ -1,4 +1,5 @@
 import CardItem from "@/app/CardItem";
+import CollectionCard from "@/app/CollectionCard";
 import Container from "@/components/Container";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
@@ -20,6 +21,10 @@ const GET_COLLECTION = gql`
         name
         description
       }
+      collections {
+        id
+        name
+      }
     }
   }
 `;
@@ -31,9 +36,19 @@ const ItemsPage = async ({ params }: IProps) => {
     variables: { id },
   });
 
+  const { collection }: { collection: Collection } = data;
+
   return (
     <main style={{ background: "blue" }}>
-      <Container style={{ padding: 20 }}>
+      <Container
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          padding: "1rem 0",
+        }}
+      >
+        <h1 style={{ color: "white", fontSize: 100 }}>{collection.name}</h1>
         <div
           style={{
             display: "grid",
@@ -41,10 +56,9 @@ const ItemsPage = async ({ params }: IProps) => {
             gap: 20,
           }}
         >
-          {data.collection.items.map((item: Item) => (
-            <CardItem key={item.id} item={item} />
+          {collection.collections.map((collection: Collection) => (
+            <CollectionCard key={collection.id} collection={collection} />
           ))}
-          {JSON.stringify(data)}
         </div>
       </Container>
     </main>
