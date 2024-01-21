@@ -1,4 +1,4 @@
-import CategoryModel from "../../models/CategoryModel";
+import CollectionModel from "../../models/CollectionModel";
 import CommentModel from "../../models/CommentModel";
 import ItemModel from "../../models/itemModel";
 
@@ -6,15 +6,15 @@ const resolvers = {
   Query: {
     items: async () => getItems(),
     item: async (_: any, data: GetItemProps) => getItem(data),
-    categories: async () => getCategories(),
-    category: async (_: any, data: GetCategoryProps) => getCategory(data),
+    collections: async () => getCollections(),
+    collection: async (_: any, data: GetCollectionProps) => getCollection(data),
     comments: async (_: any, data: GetCommentsProps) => getComments(data),
   },
   Mutation: {
     addItem: async (_: any, data: any) => addItem(data),
     addComment: async (_: any, data: AddCommentProps) => addComment(data),
-    // collection
-    addCategory: async (_: any, data: AddCategoryProps) => addCategory(data),
+    addCollection: async (_: any, data: AddCollectionProps) =>
+      addCollection(data),
     addTestData: async () => addTestData(),
   },
   Item: {
@@ -25,29 +25,31 @@ const resolvers = {
       });
       return parent.comments;
     },
-    categories: async (parent: any) => {
+    collections: async (parent: any) => {
       await parent.populate({
-        path: "categories",
-        model: CategoryModel,
+        path: "collections",
+        model: CollectionModel,
       });
-      return parent.categories;
+      return parent.collections;
     },
   },
-  Category: {
+  Collection: {
     items: async (parent: any) => {
       try {
-        const items = await ItemModel.find({ categories: { $in: parent.id } });
+        const items = await ItemModel.find({ collections: { $in: parent.id } });
         return items;
       } catch (error: any) {
-        throw new Error(`Error fetching items for category: ${error.message}`);
+        throw new Error(
+          `Error fetching items for collection: ${error.message}`
+        );
       }
     },
-    categories: async (parent: any) => {
+    collections: async (parent: any) => {
       await parent.populate({
-        path: "categories",
-        model: CategoryModel,
+        path: "collections",
+        model: CollectionModel,
       });
-      return parent.categories;
+      return parent.collections;
     },
   },
 };
@@ -83,26 +85,25 @@ const getItem = async (data: GetItemProps) => {
   }
 };
 
-const getCategories = async () => {
+const getCollections = async () => {
   try {
-    const categories = await CategoryModel.find();
-
-    return categories;
+    const collections = await CollectionModel.find();
+    return collections;
   } catch (error: any) {
     throw new Error(`Error getting item: ${error.message}`);
   }
 };
 
-interface GetCategoryProps {
+interface GetCollectionProps {
   id: string;
 }
 
-const getCategory = async (data: GetCategoryProps) => {
+const getCollection = async (data: GetCollectionProps) => {
   const { id } = data;
   try {
-    const category = await CategoryModel.findById(id);
+    const collection = await CollectionModel.findById(id);
 
-    return category;
+    return collection;
   } catch (error: any) {
     throw new Error(`Error getting item: ${error.message}`);
   }
@@ -138,16 +139,16 @@ interface AddItemProps {
   description: string;
   price: number;
   releaseDate: string;
-  categories: string[];
+  collections: string[];
 }
 
 const addItem = async (data: AddItemProps) => {
-  const { name, description, price, releaseDate, categories } = data;
+  const { name, description, price, releaseDate, collections } = data;
 
-  const areCategoriesValid = await checkCategoriesExist(categories);
+  const areCollectionsvalid = await checkCollectionsExist(collections);
 
-  if (!areCategoriesValid) {
-    throw new Error("One or more categories do not exist in the database.");
+  if (!areCollectionsvalid) {
+    throw new Error("One or more collections do not exist in the database.");
   }
 
   try {
@@ -156,7 +157,7 @@ const addItem = async (data: AddItemProps) => {
       description,
       price,
       releaseDate,
-      categories,
+      collections,
     });
     return await newItem.save();
   } catch (error: any) {
@@ -164,21 +165,21 @@ const addItem = async (data: AddItemProps) => {
   }
 };
 
-interface AddCategoryProps {
+interface AddCollectionProps {
   name: string;
-  categories: string[];
+  collections: string[];
 }
-const addCategory = async (data: AddCategoryProps) => {
-  const { name, categories } = data;
+const addCollection = async (data: AddCollectionProps) => {
+  const { name, collections } = data;
   try {
-    const areCategoriesValid = await checkCategoriesExist(categories);
+    const areCollectionsValid = await checkCollectionsExist(collections);
 
-    if (!areCategoriesValid) {
-      throw new Error("One or more categories do not exist in the database.");
+    if (!areCollectionsValid) {
+      throw new Error("One or more collections do not exist in the database.");
     }
 
-    const newCategory = new CategoryModel({ name, categories });
-    return (await newCategory.save()) || [];
+    const newCollection = new CollectionModel({ name, collections });
+    return (await newCollection.save()) || [];
   } catch (error: any) {
     throw new Error(`Error creating item: ${error.message}`);
   }
@@ -213,59 +214,59 @@ const addComment = async (data: AddCommentProps) => {
 
 const addTestData = async () => {
   // Reset database
-  await CategoryModel.deleteMany({});
+  await CollectionModel.deleteMany({});
   await ItemModel.deleteMany({});
   await CommentModel.deleteMany({});
 
   // Add test data
-  const category1 = await addCategory({
-    name: "Category 1",
-    categories: [],
+  const collection1 = await addCollection({
+    name: "Collection 1",
+    collections: [],
   });
-  const category2 = await addCategory({
-    name: "Category 2",
-    categories: [category1.id],
+  const collection2 = await addCollection({
+    name: "Collection 2",
+    collections: [collection1.id],
   });
-  const category3 = await addCategory({ name: "Category 3", categories: [] });
+  const collection3 = await addCollection({
+    name: "Collection 3",
+    collections: [],
+  });
   const item1 = await addItem({
     name: "Prodotto 1",
     description: "Descrizione prodotto 1",
     price: 200,
     releaseDate: "20/01/2024",
-    categories: [],
+    collections: [],
   });
   const item2 = await addItem({
     name: "Prodotto 2",
     description: "Descrizione prodotto 2",
     price: 250,
     releaseDate: "20/01/2024",
-    categories: [category1.id],
+    collections: [collection1.id],
   });
   const item3 = await addItem({
     name: "Prodotto 2",
     description: "Descrizione prodotto 2",
     price: 250,
     releaseDate: "20/01/2024",
-    categories: [category1.id, category2.id, category3.id],
+    collections: [collection1.id, collection2.id, collection3.id],
   });
 
   return {
-    categories: [category1, category2, category3],
+    collections: [collection1, collection2, collection3],
     items: [item1, item2, item3],
   };
 };
 
-const checkCategoriesExist = async (categoryIds: string[]) => {
+const checkCollectionsExist = async (collectionsIds: string[]) => {
   try {
-    // Find categories with the specified ids in the database
-    const existingCategories = await CategoryModel.find({
-      _id: { $in: categoryIds },
+    const existingCollections = await CollectionModel.find({
+      _id: { $in: collectionsIds },
     });
 
-    // Check if the number of existing categories matches the input categoryIds length
-    return existingCategories.length === categoryIds.length;
+    return existingCollections.length === collectionsIds.length;
   } catch (error: any) {
-    // Handle the error (e.g., log it or throw a specific error)
-    throw new Error(`Error checking categories: ${error.message}`);
+    throw new Error(`Error checking collections: ${error.message}`);
   }
 };

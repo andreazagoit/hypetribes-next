@@ -4,8 +4,8 @@ const typeDefs = gql`
   type Query {
     items: [Item]!
     item(id: ID!): Item!
-    categories: [Category]!
-    category(id: ID!): Category!
+    collections: [Collection]!
+    collection(id: ID!): Collection!
     comments(id: ID!): [Comment]!
   }
 
@@ -15,18 +15,18 @@ const typeDefs = gql`
       description: String
       price: Float
       releaseDate: String
-      categories: [String]!
+      collections: [String]!
     ): Item
     addComment(id: ID!, text: String!): Comment
-    addCategory(name: String!, categories: [String]!): Category
+    addCollection(name: String!, collections: [String]!): Collection
     addTestData: AddTestData
   }
 
-  type Category {
+  type Collection {
     id: ID!
     name: String!
     items: [Item]!
-    categories: [Category]!
+    collections: [Collection]!
   }
 
   type Item {
@@ -35,7 +35,7 @@ const typeDefs = gql`
     description: String
     price: Float
     releaseDate: String
-    categories: [Category]
+    collections: [Collection]
     comments: [Comment]
   }
 
@@ -45,7 +45,7 @@ const typeDefs = gql`
   }
 
   type AddTestData {
-    categories: [Category]
+    collections: [Collection]
     items: [Item]
   }
 `;

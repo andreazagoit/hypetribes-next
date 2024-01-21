@@ -6,7 +6,7 @@ const itemSchema = new Schema<Item>(
     description: { type: String },
     price: { type: Number },
     releaseDate: { type: String },
-    categories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
+    collections: [{ type: Schema.Types.ObjectId, ref: "Collection" }],
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }

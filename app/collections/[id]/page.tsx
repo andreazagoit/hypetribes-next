@@ -10,9 +10,9 @@ interface IProps {
   };
 }
 
-const GET_CATEGORY = gql`
-  query GET_CATEGORY($id: ID!) {
-    category(id: $id) {
+const GET_COLLECTION = gql`
+  query GET_COLLECTION($id: ID!) {
+    collection(id: $id) {
       id
       name
       items {
@@ -27,7 +27,7 @@ const GET_CATEGORY = gql`
 const ItemsPage = async ({ params }: IProps) => {
   const { id } = params;
   const { data } = await getClient().query({
-    query: GET_CATEGORY,
+    query: GET_COLLECTION,
     variables: { id },
   });
 
@@ -41,7 +41,7 @@ const ItemsPage = async ({ params }: IProps) => {
             gap: 20,
           }}
         >
-          {data.category.items.map((item: Item) => (
+          {data.collection.items.map((item: Item) => (
             <CardItem key={item.id} item={item} />
           ))}
           {JSON.stringify(data)}

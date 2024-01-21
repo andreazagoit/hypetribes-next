@@ -18,7 +18,7 @@ const GET_ITEM = gql`
       description
       price
       releaseDate
-      categories {
+      collections {
         id
         name
       }

@@ -5,10 +5,10 @@ interface Comment {
   updatedAt: String!;
 }
 
-interface Category {
+interface Collection {
   id: ID!;
   name: String!;
-  categories: [Category]!;
+  collections: [Collection]!;
   items: [Item]!;
 }
 
@@ -18,7 +18,7 @@ interface Item {
   description: String;
   price: Float;
   releaseDate: String;
-  categories: [Category];
+  collections: [Collection];
   comments: [Comment];
   createdAt: String!;
   updatedAt: String!;
