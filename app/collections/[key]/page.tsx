@@ -22,6 +22,12 @@ const GET_COLLECTION = gql`
         key
         name
       }
+      items {
+        id
+        name
+        description
+        releaseDate
+      }
     }
   }
 `;
@@ -55,6 +61,20 @@ const CollectionsPage = async ({ params }: IProps) => {
         >
           {collection.collections.map((collection: Collection) => (
             <CollectionCard key={collection.id} collection={collection} />
+          ))}
+        </div>
+        <h1>Items</h1>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gap: 20,
+            alignItems: "stretch",
+            gridAutoRows: "1fr",
+          }}
+        >
+          {collection.items.map((item: Item) => (
+            <CardItem key={item.id} item={item} />
           ))}
         </div>
       </Container>

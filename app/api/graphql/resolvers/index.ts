@@ -231,6 +231,7 @@ const addTestData = async () => {
   await ItemModel.deleteMany({});
   await CommentModel.deleteMany({});
 
+  // GET GENRES
   const getGenres = async () => {
     const options = {
       method: "GET",
@@ -258,8 +259,38 @@ const addTestData = async () => {
       throw error;
     }
   };
-
   const { genres } = await getGenres();
+
+  // GET UPCOMING MOVIES
+  const getUpcomingMovie = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMGE1M2VmNTc5YWYxY2Q4NTE1MGJkN2VmNmM5MGY3MCIsInN1YiI6IjY1YWM4M2VkYmQ1ODhiMDEwYjVjNjVlOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oV0BquZrShrc67aAa9AVKKMbazDZgNMbiXp8CEUFVNY",
+      },
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
+        options
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching genres:", error);
+      throw error;
+    }
+  };
+
+  const upcomingMovies = await getUpcomingMovie();
 
   // Add test data
 
@@ -268,6 +299,26 @@ const addTestData = async () => {
     name: "Movies",
     collections: [],
   });
+
+  const movieUpcomingCollection = await addCollection({
+    key: "movie-upcoming",
+    name: "Upcoming movies",
+    collections: [movieCollection.id],
+  });
+
+  const upcomingMoviesItems = await Promise.all(
+    upcomingMovies.results.map(async (result: any) => {
+      console.log("result", result);
+      const item = await addItem({
+        name: result.original_title,
+        description: result.overview,
+        price: 0,
+        releaseDate: result.relase_date,
+        collections: [movieUpcomingCollection.id],
+      });
+      return item;
+    })
+  );
 
   // Create a collection for each genre
   const genreCollections = await Promise.all(

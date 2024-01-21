@@ -9,7 +9,11 @@ const CardItem = ({ item }: IProps) => {
   return (
     <Link href={`/items/${item.id}`}>
       <div
-        style={{ border: "2px solid red", padding: 20, background: "white" }}
+        style={{
+          border: "2px solid red",
+          padding: 20,
+          background: "white",
+        }}
       >
         <h1>{item.name}</h1>
         <p>{item.description}</p>
