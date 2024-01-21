@@ -5,7 +5,7 @@ const typeDefs = gql`
     items: [Item]!
     item(id: ID!): Item!
     collections: [Collection]!
-    collection(id: ID!): Collection!
+    collection(key: String): Collection!
     comments(id: ID!): [Comment]!
   }
 
@@ -18,12 +18,17 @@ const typeDefs = gql`
       collections: [String]!
     ): Item
     addComment(id: ID!, text: String!): Comment
-    addCollection(name: String!, collections: [String]!): Collection
+    addCollection(
+      key: String!
+      name: String!
+      collections: [String]!
+    ): Collection
     addTestData: AddTestData
   }
 
   type Collection {
     id: ID!
+    key: String!
     name: String!
     items: [Item]!
     collections: [Collection]!

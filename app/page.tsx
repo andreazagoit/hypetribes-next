@@ -4,22 +4,10 @@ import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import CollectionCard from "./CollectionCard";
 
-const GET_ITEMS = gql`
-  query GET_ITEMS {
-    items {
-      id
-      name
-      description
-      price
-      releaseDate
-    }
-  }
-`;
-
 const GET_COLLECTIONS = gql`
   query GET_COLLECTIONS {
     collections {
-      id
+      key
       name
       items {
         id

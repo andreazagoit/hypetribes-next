@@ -7,6 +7,7 @@ interface Comment {
 
 interface Collection {
   id: ID!;
+  key: string!;
   name: String!;
   collections: [Collection]!;
   items: [Item]!;

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import CollectionModel from "../../models/CollectionModel";
 import CommentModel from "../../models/CommentModel";
 import ItemModel from "../../models/itemModel";
@@ -45,7 +46,6 @@ const resolvers = {
       }
     },
     collections: async (parent: any) => {
-      console.log(parent.collections);
       try {
         const collections = await CollectionModel.find({
           collections: { $in: [parent.id] },
@@ -93,7 +93,7 @@ const getItem = async (data: GetItemProps) => {
 
 const getCollections = async () => {
   try {
-    const collections = await CollectionModel.find();
+    const collections = await CollectionModel.find({ key: "movie" });
     return collections;
   } catch (error: any) {
     throw new Error(`Error getting item: ${error.message}`);
@@ -101,13 +101,14 @@ const getCollections = async () => {
 };
 
 interface GetCollectionProps {
-  id: string;
+  key: string;
 }
 
 const getCollection = async (data: GetCollectionProps) => {
-  const { id } = data;
+  const { key } = data;
   try {
-    const collection = await CollectionModel.findById(id);
+    const collection = await CollectionModel.findOne({ key });
+    console.log("collection", collection);
 
     return collection;
   } catch (error: any) {
@@ -172,11 +173,13 @@ const addItem = async (data: AddItemProps) => {
 };
 
 interface AddCollectionProps {
+  key: string;
   name: string;
   collections: string[];
 }
 const addCollection = async (data: AddCollectionProps) => {
-  const { name, collections } = data;
+  const { key, name, collections } = data;
+
   try {
     const areCollectionsValid = await checkCollectionsExist(collections);
 
@@ -184,7 +187,11 @@ const addCollection = async (data: AddCollectionProps) => {
       throw new Error("One or more collections do not exist in the database.");
     }
 
-    const newCollection = new CollectionModel({ name, collections });
+    const newCollection = new CollectionModel({
+      key,
+      name,
+      collections,
+    });
     return (await newCollection.save()) || [];
   } catch (error: any) {
     throw new Error(`Error creating item: ${error.message}`);
@@ -257,58 +264,25 @@ const addTestData = async () => {
   // Add test data
 
   const movieCollection: Collection = await addCollection({
+    key: "movie",
     name: "Movies",
     collections: [],
   });
-
-  console.log("movieCollection", movieCollection.id);
 
   // Create a collection for each genre
   const genreCollections = await Promise.all(
     genres.map(async (genre: { id: number; name: string }) => {
       const collection = await addCollection({
+        key: `movie-${genre.name.toLocaleLowerCase().split(" ").join("_")}`,
         name: genre.name,
         collections: [movieCollection.id],
       });
       return collection;
     })
   );
-  /* const collection1 = await addCollection({
-    name: "Collection 1",
-    collections: [],
-  });
-  const collection2 = await addCollection({
-    name: "Collection 2",
-    collections: [collection1.id],
-  });
-  const collection3 = await addCollection({
-    name: "Collection 3",
-    collections: [],
-  });
-  const item1 = await addItem({
-    name: "Prodotto 1",
-    description: "Descrizione prodotto 1",
-    price: 200,
-    releaseDate: "20/01/2024",
-    collections: [],
-  });
-  const item2 = await addItem({
-    name: "Prodotto 2",
-    description: "Descrizione prodotto 2",
-    price: 250,
-    releaseDate: "20/01/2024",
-    collections: [collection1.id],
-  });
-  const item3 = await addItem({
-    name: "Prodotto 3",
-    description: "Descrizione prodotto 3",
-    price: 250,
-    releaseDate: "20/01/2024",
-    collections: [collection1.id, collection2.id, collection3.id],
-  }); */
 
   return {
-    collections: [],
+    collections: getCollections(),
     items: [],
   };
 };

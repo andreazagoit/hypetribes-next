@@ -7,33 +7,30 @@ import React from "react";
 
 interface IProps {
   params: {
-    id: string;
+    key: string;
   };
 }
 
 const GET_COLLECTION = gql`
-  query GET_COLLECTION($id: ID!) {
-    collection(id: $id) {
+  query GET_COLLECTION($key: String!) {
+    collection(key: $key) {
       id
+      key
       name
-      items {
-        id
-        name
-        description
-      }
       collections {
         id
+        key
         name
       }
     }
   }
 `;
 
-const ItemsPage = async ({ params }: IProps) => {
-  const { id } = params;
+const CollectionsPage = async ({ params }: IProps) => {
+  const { key } = params;
   const { data } = await getClient().query({
     query: GET_COLLECTION,
-    variables: { id },
+    variables: { key },
   });
 
   const { collection }: { collection: Collection } = data;
@@ -65,4 +62,4 @@ const ItemsPage = async ({ params }: IProps) => {
   );
 };
 
-export default ItemsPage;
+export default CollectionsPage;

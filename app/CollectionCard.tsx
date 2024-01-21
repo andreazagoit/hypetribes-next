@@ -6,7 +6,7 @@ interface IProps {
 
 const CollectionCard = ({ collection }: IProps) => {
   return (
-    <Link href={`/collections/${collection.id}`}>
+    <Link href={`/collections/${collection.key}`}>
       <div
         style={{ border: "2px solid red", padding: 20, background: "white" }}
       >
