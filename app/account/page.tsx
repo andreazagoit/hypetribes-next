@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Container from "@/components/Container";
 import LogoutButton from "@/components/LogoutButton";
 import Link from "next/link";
