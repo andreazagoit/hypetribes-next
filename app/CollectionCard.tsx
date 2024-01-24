@@ -8,7 +8,11 @@ const CollectionCard = ({ collection }: IProps) => {
   return (
     <Link href={`/collections/${collection.key}`}>
       <div
-        style={{ border: "2px solid red", padding: 20, background: "white" }}
+        style={{
+          border: "2px solid white",
+          padding: 20,
+          background: "var(--background-dark)",
+        }}
       >
         <h1>{collection.name}</h1>
       </div>
