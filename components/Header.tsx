@@ -13,6 +13,7 @@ const Header = () => {
   const menuOptions = [
     { path: "/", name: "Home" },
     { path: "/about-us", name: "About Us" },
+    { path: "account", name: "Account" },
   ];
 
   return (
