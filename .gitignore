@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# custom
+hypetribes-30694-firebase-adminsdk-pt84l-a534ba7193.json
