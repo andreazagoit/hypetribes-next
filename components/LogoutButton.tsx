@@ -14,7 +14,18 @@ const LogoutButton = () => {
 
   return (
     <div>
-      <button onClick={handleSignOut}>Log out</button>
+      <button
+        onClick={handleSignOut}
+        style={{
+          padding: "12px 20px",
+          textTransform: "uppercase",
+          background: "white",
+          border: "1px solid white",
+          cursor: "pointer",
+        }}
+      >
+        Log out
+      </button>
     </div>
   );
 };

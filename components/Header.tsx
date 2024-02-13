@@ -1,6 +1,5 @@
 import React from "react";
 import Container from "./Container";
-import { usePathname } from "next/navigation";
 
 import "./header.scss";
 import Link from "next/link";
@@ -48,7 +47,7 @@ const Header = async () => {
                 >
                   <div
                     style={{
-                      background: "white",
+                      background: "var(--background-dark)",
                       padding: 2,
                       borderRadius: "50%",
                     }}

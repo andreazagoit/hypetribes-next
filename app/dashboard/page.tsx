@@ -11,10 +11,11 @@ export default async function DashboardPage() {
   return (
     <main className="container">
       <Container>
-        <PageContent
+        {/* <PageContent
           variant="dashboard"
           currentUser={currentUser.toJSON() as typeof currentUser}
-        />
+        /> */}
+        <h1 style={{ fontSize: "4rem", marginTop: "1rem" }}>Dashboard</h1>
       </Container>
     </main>
   );

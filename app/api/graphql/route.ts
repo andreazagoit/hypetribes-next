@@ -13,7 +13,7 @@ mongoose
     "mongodb+srv://admin:h1LxqZ3rv0skoBZT@cluster0.sdbpxio.mongodb.net/?retryWrites=true&w=majority"
   )
   .then(() => {
-    console.log("mongoose ok");
+    console.log("mongoose ready");
   })
   .catch((error) => console.log("error", error));
 

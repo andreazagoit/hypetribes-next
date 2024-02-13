@@ -1,6 +1,9 @@
+import { getCurrentUser } from "@/lib/firebase/firebase-admin";
 import CollectionModel from "../../models/CollectionModel";
 import CommentModel from "../../models/CommentModel";
 import ItemModel from "../../models/itemModel";
+
+import { cookies } from "next/headers";
 
 const resolvers = {
   Query: {
@@ -91,6 +94,14 @@ const getItem = async (data: GetItemProps) => {
 };
 
 const getCollections = async () => {
+  try {
+    console.log("COOKIE", cookies().get("__session")?.value);
+    const user = await getCurrentUser();
+    console.log("USER", user);
+  } catch (error) {
+    console.log(error);
+  }
+
   try {
     const collections = await CollectionModel.find({ key: "movie" });
     return collections;
