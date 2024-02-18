@@ -1,5 +1,4 @@
 "use client";
-// ^ this file needs the "use client" pragma
 
 import { ApolloLink, HttpLink } from "@apollo/client";
 import {
@@ -23,6 +22,17 @@ export function makeClient() {
     // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
   });
 
+  // Create a middleware to add the token as a bearer token in the request headers
+  const authLink = new ApolloLink((operation, forward) => {
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : "", // Add token as bearer token
+      },
+    });
+    return forward(operation);
+  });
+
   return new NextSSRApolloClient({
     // use the `NextSSRInMemoryCache`, not the normal `InMemoryCache`
     cache: new NextSSRInMemoryCache(),
@@ -35,6 +45,7 @@ export function makeClient() {
             new SSRMultipartLink({
               stripDefer: true,
             }),
+            authLink,
             httpLink,
           ])
         : httpLink,

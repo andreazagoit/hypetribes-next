@@ -25,3 +25,10 @@ interface Item {
   createdAt: String!;
   updatedAt: String!;
 }
+
+interface User {
+  id: ID!;
+  name: string!;
+  email: string!;
+  token: string;
+}

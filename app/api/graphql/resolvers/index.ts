@@ -1,14 +1,22 @@
 import CollectionModel from "../../models/CollectionModel";
 import CommentModel from "../../models/CommentModel";
+import UserModel from "../../models/UserModel";
 import ItemModel from "../../models/itemModel";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const resolvers = {
   Query: {
+    // ITEMS
     items: async () => getItems(),
     item: async (_: any, data: GetItemProps) => getItem(data),
+    // COLLECTIONS
     collections: async () => getCollections(),
     collection: async (_: any, data: GetCollectionProps) => getCollection(data),
+    // COMMENTS
     comments: async (_: any, data: GetCommentsProps) => getComments(data),
+    // USER
+    user: async () => getUser(),
   },
   Mutation: {
     addItem: async (_: any, data: any) => addItem(data),
@@ -16,6 +24,13 @@ const resolvers = {
     addCollection: async (_: any, data: AddCollectionProps) =>
       addCollection(data),
     addTestData: async () => addTestData(),
+    // User
+    registerWithCredentials: async (
+      _: any,
+      data: RegisterWithCredentialsProps
+    ) => registerWithCredentials(data),
+    loginWithCredentials: async (_: any, data: LoginWithCredentialsProps) =>
+      loginWithCredentials(data),
   },
   Item: {
     comments: async (parent: any) => {
@@ -347,5 +362,99 @@ const checkCollectionsExist = async (collectionsIds: string[]) => {
     return existingCollections.length === collectionsIds.length;
   } catch (error: any) {
     throw new Error(`Error checking collections: ${error.message}`);
+  }
+};
+
+const getUser = async () => {
+  return {
+    mail: "andrea@test.com",
+  };
+};
+
+interface RegisterWithCredentialsProps {
+  name: string;
+  email: string;
+  password: string;
+}
+const registerWithCredentials = async (data: RegisterWithCredentialsProps) => {
+  const { name, email, password } = data;
+
+  console.log(data);
+
+  const existingUser = await UserModel.findOne({ email });
+  console.log("existing", existingUser);
+
+  if (existingUser) {
+    throw new Error(`The user exist`);
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create a new user with hashed password
+  const newUser = new UserModel({
+    name,
+    email,
+    credentials: { password: hashedPassword },
+  });
+  await newUser.save();
+
+  // Generate JWT
+  const token = jwt.sign({ userId: newUser._id }, "your_secret_key", {
+    expiresIn: "1h",
+  });
+
+  return {
+    id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+    token,
+  };
+};
+
+interface LoginWithCredentialsProps {
+  email: string;
+  password: string;
+}
+const loginWithCredentials = async (data: LoginWithCredentialsProps) => {
+  const { email, password } = data;
+
+  const user = await UserModel.findOne({ email });
+
+  if (!user) {
+    throw new Error(`User not found`);
+  }
+
+  // Check if the password matches
+  const isPasswordValid = await bcrypt.compare(
+    password,
+    user.credentials.password
+  );
+
+  if (!isPasswordValid) {
+    throw new Error(`Invalid password`);
+  }
+
+  // Generate JWT
+  const token = jwt.sign({ userId: user.id }, "your_secret_key", {
+    expiresIn: "1h",
+  });
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    token: token,
+  };
+};
+
+const verifyToken = (token: string) => {
+  try {
+    // Verify the token and extract the payload
+    const decodedToken = jwt.verify(token, "your_secret_key");
+    return decodedToken;
+  } catch (error) {
+    // If token verification fails, throw an error
+    throw new Error("Invalid token");
   }
 };

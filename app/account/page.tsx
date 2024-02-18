@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
 import Link from "next/link";
 import React from "react";
+import Login from "./components/Login";
 
 const AccountPage = () => {
   return (
@@ -8,6 +9,7 @@ const AccountPage = () => {
       <Container>
         <h1>Account</h1>
         <Link href="/account/wishlist">Wishlist</Link>
+        <Login />
       </Container>
     </div>
   );

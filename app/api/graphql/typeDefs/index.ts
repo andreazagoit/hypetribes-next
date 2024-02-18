@@ -7,6 +7,7 @@ const typeDefs = gql`
     collections: [Collection]!
     collection(key: String): Collection!
     comments(id: ID!): [Comment]!
+    user: User!
   }
 
   type Mutation {
@@ -24,6 +25,12 @@ const typeDefs = gql`
       collections: [String]!
     ): Collection
     addTestData: AddTestData
+    registerWithCredentials(
+      name: String!
+      email: String!
+      password: String!
+    ): User!
+    loginWithCredentials(email: String!, password: String!): User!
   }
 
   type Collection {
@@ -53,6 +60,13 @@ const typeDefs = gql`
   type AddTestData {
     collections: [Collection]
     items: [Item]
+  }
+
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    token: String!
   }
 `;
 
