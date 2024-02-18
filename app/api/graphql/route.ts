@@ -6,8 +6,6 @@ import resolvers from "./resolvers";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import mongoose from "mongoose"; // Import Mongoose
 
-console.log("initialize");
-
 mongoose
   .connect(
     "mongodb+srv://admin:h1LxqZ3rv0skoBZT@cluster0.sdbpxio.mongodb.net/?retryWrites=true&w=majority"
