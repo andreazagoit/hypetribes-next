@@ -4,11 +4,8 @@ import { usePathname } from "next/navigation";
 
 import "./header.scss";
 import Link from "next/link";
-import { getCurrentUser } from "@/lib/firebase/firebase-admin";
 
 const Header = async () => {
-  const currentUser = await getCurrentUser();
-
   const menuOptions = [
     { path: "/", name: "Home" },
     { path: "/sign-in", name: "SignIn" },
@@ -18,7 +15,7 @@ const Header = async () => {
 
   return (
     <div className="header">
-      <Container>
+      {/* <Container>
         <Link className="header__branding" href="/">
           HypeTribes
         </Link>
@@ -68,7 +65,7 @@ const Header = async () => {
             </>
           )}
         </ul>
-      </Container>
+      </Container> */}
     </div>
   );
 };
