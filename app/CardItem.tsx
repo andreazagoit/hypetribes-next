@@ -10,9 +10,9 @@ const CardItem = ({ item }: IProps) => {
     <Link href={`/items/${item.id}`}>
       <div
         style={{
-          border: "2px solid red",
+          border: "2px solid white",
           padding: 20,
-          background: "white",
+          background: "var(--background-dark)",
         }}
       >
         <img

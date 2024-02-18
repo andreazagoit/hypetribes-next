@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Container from "@/components/Container";
 import Link from "next/link";
 import React from "react";
