@@ -6,15 +6,15 @@ import resolvers from "./resolvers";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import mongoose from "mongoose"; // Import Mongoose
 
+// Connect to MongoDB
 mongoose
   .connect(
     "mongodb+srv://admin:h1LxqZ3rv0skoBZT@cluster0.sdbpxio.mongodb.net/?retryWrites=true&w=majority"
   )
-  .then(() => {
-    console.log("mongoose ok");
-  })
+  .then(() => console.log("Connected to DB"))
   .catch((error) => console.log("error", error));
 
+// Create Apollo Server instance
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -22,7 +22,7 @@ const server = new ApolloServer({
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
 });
 
-// Typescript: req has the type NextRequest
+// Start server and create request handler
 const handler = startServerAndCreateNextHandler<NextRequest>(server, {
   context: async (req) => ({ req }),
 });

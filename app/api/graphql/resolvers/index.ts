@@ -9,38 +9,35 @@ const resolvers = {
   Query: {
     // ITEMS
     items: async () => getItems(),
-    item: async (_: any, data: GetItemProps) => getItem(data),
+    item: async (_, data) => getItem(data),
     // COLLECTIONS
     collections: async () => getCollections(),
-    collection: async (_: any, data: GetCollectionProps) => getCollection(data),
+    collection: async (_, data) => getCollection(data),
     // COMMENTS
-    comments: async (_: any, data: GetCommentsProps) => getComments(data),
+    comments: async (_, data) => getComments(data),
     // USER
     user: async () => getUser(),
   },
   Mutation: {
-    addItem: async (_: any, data: any) => addItem(data),
-    addComment: async (_: any, data: AddCommentProps) => addComment(data),
-    addCollection: async (_: any, data: AddCollectionProps) =>
-      addCollection(data),
+    addItem: async (_, data) => addItem(data),
+    addComment: async (_, data: AddCommentProps) => addComment(data),
+    addCollection: async (_, data: AddCollectionProps) => addCollection(data),
     addTestData: async () => addTestData(),
     // User
-    registerWithCredentials: async (
-      _: any,
-      data: RegisterWithCredentialsProps
-    ) => registerWithCredentials(data),
-    loginWithCredentials: async (_: any, data: LoginWithCredentialsProps) =>
+    registerWithCredentials: async (_, data: RegisterWithCredentialsProps) =>
+      registerWithCredentials(data),
+    loginWithCredentials: async (_, data: LoginWithCredentialsProps) =>
       loginWithCredentials(data),
   },
   Item: {
-    comments: async (parent: any) => {
+    comments: async (parent) => {
       await parent.populate({
         path: "comments",
         model: CommentModel,
       });
       return parent.comments;
     },
-    collections: async (parent: any) => {
+    collections: async (parent) => {
       await parent.populate({
         path: "collections",
         model: CollectionModel,
