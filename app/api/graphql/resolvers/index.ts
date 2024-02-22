@@ -19,15 +19,17 @@ const resolvers = {
     user: async () => getUser(),
   },
   Mutation: {
+    // ITEMS
     addItem: async (_, data) => addItem(data),
-    addComment: async (_, data: AddCommentProps) => addComment(data),
-    addCollection: async (_, data: AddCollectionProps) => addCollection(data),
+    // COMMENTS
+    addComment: async (_, data) => addComment(data),
+    // COLLECTIONS
+    addCollection: async (_, data) => addCollection(data),
+    // TEST
     addTestData: async () => addTestData(),
-    // User
-    registerWithCredentials: async (_, data: RegisterWithCredentialsProps) =>
-      registerWithCredentials(data),
-    loginWithCredentials: async (_, data: LoginWithCredentialsProps) =>
-      loginWithCredentials(data),
+    // USER
+    registerWithCredentials: async (_, data) => registerWithCredentials(data),
+    loginWithCredentials: async (_, data) => loginWithCredentials(data),
   },
   Item: {
     comments: async (parent) => {
