@@ -331,7 +331,6 @@ const addTestData = async () => {
         images: [`https://image.tmdb.org/t/p/original${result.poster_path}`],
         collections: [movieUpcomingCollection.id],
       });
-      console.log("RESULT ITEM", item);
       return item;
     })
   );
@@ -380,10 +379,7 @@ interface RegisterWithCredentialsProps {
 const registerWithCredentials = async (data: RegisterWithCredentialsProps) => {
   const { name, email, password } = data;
 
-  console.log(data);
-
   const existingUser = await UserModel.findOne({ email });
-  console.log("existing", existingUser);
 
   if (existingUser) {
     throw new Error(`The user exist`);

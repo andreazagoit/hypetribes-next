@@ -26,12 +26,11 @@ export default async function Home() {
   const { data } = await getClient().query({ query: GET_COLLECTIONS });
   return (
     <Page title="Homepage">
-      <div className="grid grid-cols-3 gap-8" style={{ height: "200vh" }}>
+      <div className="grid grid-cols-3 gap-8">
         {data.collections.map((collection: Collection) => (
           <CollectionCard key={collection.id} collection={collection} />
         ))}
       </div>
-      ciao!
     </Page>
   );
 }
