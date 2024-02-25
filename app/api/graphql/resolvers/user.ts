@@ -1,6 +1,3 @@
-"use server";
-export const dynamic = "force-dynamic";
-
 import { generateUserToken, verifyUserToken } from "@/utils/user";
 import UserModel from "../../models/UserModel";
 import { initAdmin } from "@/lib/firebase/admin";
