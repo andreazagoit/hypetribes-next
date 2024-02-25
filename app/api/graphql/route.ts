@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { ApolloServer } from "@apollo/server";
 import { NextRequest } from "next/server";
