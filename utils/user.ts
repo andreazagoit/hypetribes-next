@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 export const generateUserToken = async (user) => {
   try {
     return jwt.sign(user, process.env.NEXT_PUBLIC_JWT_SECRET!, {
-      expiresIn: "1h",
+      expiresIn: "1y",
     });
   } catch {
     throw new Error("Invalid user data");

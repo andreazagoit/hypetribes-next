@@ -3,9 +3,9 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/app/api/graphql/resolvers/user";
 import LoginWithGoogleButton from "./components/LoginWithGoogleButton";
 
-const LoginPage = async () => {
-  const user = await getCurrentUser();
-  /* if (user) redirect("/account"); */
+const LoginPage = () => {
+  const user = getCurrentUser();
+  if (user) redirect("/account");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center">

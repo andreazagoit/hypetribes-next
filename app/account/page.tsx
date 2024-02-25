@@ -1,6 +1,3 @@
-export const dynamic = "force-dynamic";
-import Container from "@/components/Container";
-import Link from "next/link";
 import React from "react";
 import { getCurrentUser } from "../api/graphql/resolvers/user";
 import { redirect } from "next/navigation";
@@ -8,10 +5,7 @@ import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
 
 const AccountPage = () => {
-  console.log("Try to log");
   const user = getCurrentUser();
-  console.log("user", user);
-
   if (!user) redirect("/account/login");
 
   return (
