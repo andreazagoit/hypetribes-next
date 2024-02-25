@@ -8,9 +8,9 @@ interface PageProps {
 
 const Page = ({ title, children }: PageProps) => {
   return (
-    <main className={`pt-${title ? "32" : "20"} pb-20`}>
+    <main className="pt-32">
       <Container>
-        {title && ( // Rendering title only if it's present
+        {title && (
           <h1 className="text-5xl font-bold mb-8">
             <span className="text-blue-500 px-2">{title}</span>
           </h1>
