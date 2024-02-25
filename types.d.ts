@@ -34,5 +34,5 @@ interface User {
   id: ID!;
   name: string!;
   email: string!;
-  token: string;
+  picture: string;
 }

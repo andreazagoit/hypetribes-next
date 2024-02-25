@@ -4,6 +4,7 @@ import UserModel from "../../models/UserModel";
 import ItemModel from "../../models/itemModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { loginWithGoogle } from "./user";
 
 const resolvers = {
   Query: {
@@ -30,6 +31,7 @@ const resolvers = {
     // USER
     registerWithCredentials: async (_, data) => registerWithCredentials(data),
     loginWithCredentials: async (_, data) => loginWithCredentials(data),
+    loginWithGoogle: async (_, data) => loginWithGoogle(data),
   },
   Item: {
     comments: async (parent) => {
@@ -445,15 +447,4 @@ const loginWithCredentials = async (data: LoginWithCredentialsProps) => {
     email: user.email,
     token: token,
   };
-};
-
-const verifyToken = (token: string) => {
-  try {
-    // Verify the token and extract the payload
-    const decodedToken = jwt.verify(token, "your_secret_key");
-    return decodedToken;
-  } catch (error) {
-    // If token verification fails, throw an error
-    throw new Error("Invalid token");
-  }
 };

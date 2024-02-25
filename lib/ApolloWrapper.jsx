@@ -24,7 +24,7 @@ export function makeClient() {
 
   // Create a middleware to add the token as a bearer token in the request headers
   const authLink = new ApolloLink((operation, forward) => {
-    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    const token = localStorage.getItem("_session"); // Retrieve the token from localStorage
     operation.setContext({
       headers: {
         authorization: token ? `Bearer ${token}` : "", // Add token as bearer token

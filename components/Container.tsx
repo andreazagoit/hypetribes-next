@@ -9,7 +9,13 @@ const Container = ({ children, style }: IProps) => {
   return (
     <div
       className="container"
-      style={{ margin: "0 auto", maxWidth: 1400, padding: "0 20px", ...style }}
+      style={{
+        margin: "0 auto",
+        maxWidth: 1400,
+        padding: "0 20px",
+        width: "100%",
+        ...style,
+      }}
     >
       {children}
     </div>

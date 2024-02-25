@@ -31,6 +31,7 @@ const typeDefs = gql`
       password: String!
     ): User!
     loginWithCredentials(email: String!, password: String!): User!
+    loginWithGoogle(accessToken: String!): User
   }
 
   type Collection {
@@ -66,6 +67,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String!
+    picture: String
     token: String!
   }
 `;

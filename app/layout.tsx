@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.scss";
 import { ApolloWrapper } from "@/lib/ApolloWrapper";
-import Header from "@/components/Header";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import Header from "./components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ApolloWrapper>
-          <Header />
-          {children}
-        </ApolloWrapper>
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
+        >
+          <ApolloWrapper>
+            <Header />
+            {children}
+          </ApolloWrapper>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

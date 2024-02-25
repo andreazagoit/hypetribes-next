@@ -2,29 +2,22 @@
 
 import { useRouter } from "next/navigation";
 
-import { UserRecord } from "firebase-admin/auth";
-
-import { signInWithGoogle, signOut } from "@/lib/firebase/auth";
-
 export default function PageContent({
   variant,
   currentUser,
 }: {
   variant: "sign-in" | "dashboard";
-  currentUser?: UserRecord;
+  currentUser?: any;
 }) {
   const router = useRouter();
 
   const handleSignIn = async () => {
-    const isOk = await signInWithGoogle();
-
     /* if (isOk) router.push("/dashboard"); */
-    if (isOk) router.refresh();
+    router.refresh();
   };
 
   const handleSignOut = async () => {
-    const isOk = await signOut();
-    if (isOk) router.refresh();
+    router.refresh();
     /* if (isOk) router.push("/sign-in"); */
   };
 
