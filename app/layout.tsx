@@ -24,7 +24,7 @@ export default function RootLayout({
           clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
         >
           <ApolloWrapper>
-            <Header />
+            {/* <Header /> */}
             {children}
           </ApolloWrapper>
         </GoogleOAuthProvider>
