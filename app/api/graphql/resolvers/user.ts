@@ -1,4 +1,5 @@
 "use server";
+export const dynamic = "force-dynamic";
 
 import { generateUserToken, verifyUserToken } from "@/utils/user";
 import UserModel from "../../models/UserModel";
@@ -55,6 +56,7 @@ export const loginWithGoogle = async (data: LoginWithGoogle) => {
 
 export const getCurrentUser = () => {
   const cookie = cookies().get("__session")?.value;
+  console.log(cookie, cookies().get("__session"));
   if (!cookie) return;
   return verifyUserToken(cookie) as User;
 };
