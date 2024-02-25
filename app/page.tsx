@@ -3,6 +3,7 @@ import Container from "@/components/Container";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import CollectionCard from "./CollectionCard";
+import Page from "@/components/Page";
 
 const GET_COLLECTIONS = gql`
   query GET_COLLECTIONS {
@@ -24,20 +25,12 @@ const GET_COLLECTIONS = gql`
 export default async function Home() {
   const { data } = await getClient().query({ query: GET_COLLECTIONS });
   return (
-    <main style={{ background: "blue" }}>
-      <Container style={{ padding: 20 }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 20,
-          }}
-        >
-          {data.collections.map((collection: Collection) => (
-            <CollectionCard key={collection.id} collection={collection} />
-          ))}
-        </div>
-      </Container>
-    </main>
+    <Page title="Homepage">
+      <div className="grid grid-cols-3 gap-8">
+        {data.collections.map((collection: Collection) => (
+          <CollectionCard key={collection.id} collection={collection} />
+        ))}
+      </div>
+    </Page>
   );
 }

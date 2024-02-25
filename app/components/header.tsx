@@ -7,34 +7,56 @@ const Header = () => {
   const user: User = getCurrentUser()!;
 
   return (
-    <div style={{ background: "blue" }}>
+    <header className="bg-blue-900 bg-opacity-75 backdrop-filter backdrop-blur-lg text-white py-4 px-6 fixed top-0 w-full z-10">
       <Container>
-        <div
-          style={{
-            height: 80,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ fontWeight: 700, fontSize: 24 }}>
-            <Link href="/">Hypetribes</Link>
-          </div>
-          <div>
-            <Link href="/account">
-              {!user ? (
-                "account"
+        <div className="flex justify-between items-center h-12">
+          <Link href="/">
+            <h1 className="text-xl font-semibold">HypeTribes</h1>
+          </Link>
+          <nav className="mt-1">
+            <ul className="flex space-x-4 items-center">
+              <li>
+                <a href="#" className="hover:text-gray-300">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-gray-300">
+                  About
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-gray-300">
+                  Services
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-gray-300">
+                  Contact
+                </a>
+              </li>
+              {!user?.picture ? (
+                <li>
+                  <Link href="/account" className="hover:text-gray-300">
+                    Login
+                  </Link>
+                </li>
               ) : (
-                <img
-                  src={user.picture}
-                  style={{ height: 40, width: 40, borderRadius: "50%" }}
-                />
+                <li>
+                  <Link href="/account">
+                    <img
+                      src={user.picture}
+                      alt="Avatar"
+                      className="h-8 w-8 rounded-full"
+                    />
+                  </Link>
+                </li>
               )}
-            </Link>
-          </div>
+            </ul>
+          </nav>
         </div>
       </Container>
-    </div>
+    </header>
   );
 };
 

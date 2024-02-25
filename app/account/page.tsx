@@ -5,29 +5,20 @@ import React from "react";
 import { getCurrentUser } from "../api/graphql/resolvers/user";
 import { redirect } from "next/navigation";
 import LogoutButton from "./components/LogoutButton";
+import Page from "@/components/Page";
 
 const AccountPage = async () => {
   const user = getCurrentUser();
   if (!user) redirect("/account/login");
 
   return (
-    <div>
-      <Container>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            gap: 10,
-            marginTop: 20,
-          }}
-        >
-          <h1>Welcome back {user.name}</h1>
-          <p>{user.email}</p>
-          <LogoutButton />
-        </div>
-      </Container>
-    </div>
+    <Page title="Account">
+      <div className="flex flex-col items-start gap-6">
+        <h1 className="text-3xl font-semibold">Welcome back {user.name}</h1>
+        <p className="text-gray-600">{user.email}</p>
+        <LogoutButton />
+      </div>
+    </Page>
   );
 };
 

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --background-light: #ffffff;
   --text-light: #333333;
@@ -6,15 +10,12 @@
   --text-dark: #ffffff;
 }
 
-html,
-body {
+
+
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  background-color: var(--background-dark);
-  color: var(--text-dark);
-  transition: background-color 0.3s, color 0.3s;
 }
 
 a {
@@ -23,13 +24,8 @@ a {
   cursor: pointer;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  padding: 0;
-  margin: 0;
+html,
+body {
+  height: 100%;
+  width: 100%;
 }

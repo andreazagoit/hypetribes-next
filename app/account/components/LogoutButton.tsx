@@ -1,5 +1,6 @@
 "use client";
 
+import PrimaryButton from "@/components/Button";
 import { useRouter } from "next/navigation";
 
 const LogoutButton = () => {
@@ -15,20 +16,7 @@ const LogoutButton = () => {
     router.refresh();
   };
 
-  return (
-    <button
-      style={{
-        padding: "8px 16px",
-        borderRadius: 4,
-        background: "blue",
-        border: "1px solid #fff6",
-        color: "white",
-      }}
-      onClick={handleLogout}
-    >
-      Logout
-    </button>
-  );
+  return <PrimaryButton onClick={handleLogout}>Logout</PrimaryButton>;
 };
 
 export default LogoutButton;

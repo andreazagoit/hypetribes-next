@@ -45,7 +45,14 @@ const LoginWithGoogleButton = () => {
     }
   };
 
-  return <button onClick={() => signInWithGoogle()}>google</button>;
+  return (
+    <button
+      onClick={() => signInWithGoogle()}
+      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-red-300"
+    >
+      Sign in with Google
+    </button>
+  );
 };
 
 export default LoginWithGoogleButton;

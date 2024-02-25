@@ -5,21 +5,8 @@ interface IProps {
   style?: React.CSSProperties;
 }
 
-const Container = ({ children, style }: IProps) => {
-  return (
-    <div
-      className="container"
-      style={{
-        margin: "0 auto",
-        maxWidth: 1400,
-        padding: "0 20px",
-        width: "100%",
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
+const Container = ({ children }: IProps) => {
+  return <div className="container mx-auto px-4 max-w-7xl">{children}</div>;
 };
 
 export default Container;

@@ -1,3 +1,4 @@
+import Card from "@/components/Card";
 import Link from "next/link";
 
 interface IProps {
@@ -7,15 +8,7 @@ interface IProps {
 const CollectionCard = ({ collection }: IProps) => {
   return (
     <Link key={collection.id} href={`/collections/${collection.key}`}>
-      <div
-        style={{
-          border: "2px solid white",
-          padding: 20,
-          background: "var(--background-dark)",
-        }}
-      >
-        <h1>{collection.name}</h1>
-      </div>
+      <Card title={collection.name} content="ciao!" />
     </Link>
   );
 };
