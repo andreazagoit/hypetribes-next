@@ -1,3 +1,5 @@
+"use server";
+
 import { generateUserToken, verifyUserToken } from "@/utils/user";
 import UserModel from "../../models/UserModel";
 import { initAdmin } from "@/lib/firebase/admin";
@@ -51,7 +53,7 @@ export const loginWithGoogle = async (data: LoginWithGoogle) => {
   return userData;
 };
 
-export const getCurrentUser = () => {
+export const getCurrentUser = async () => {
   const cookie = cookies().get("__session")?.value;
   if (!cookie) return;
   return verifyUserToken(cookie) as User;

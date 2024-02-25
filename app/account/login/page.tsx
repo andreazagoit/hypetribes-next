@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/app/api/graphql/resolvers/user";
 import LoginWithGoogleButton from "./components/LoginWithGoogleButton";
 
 const LoginPage = async () => {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
   if (user) redirect("/account");
 
   return (
