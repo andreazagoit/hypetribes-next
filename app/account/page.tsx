@@ -8,7 +8,10 @@ import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
 
 const AccountPage = () => {
+  console.log("Try to log");
   const user = getCurrentUser();
+  console.log("user", user);
+
   if (!user) redirect("/account/login");
 
   return (
