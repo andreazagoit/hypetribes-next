@@ -23,14 +23,15 @@ const GET_COLLECTIONS = gql`
 `;
 
 export default async function Home() {
-  const { data } = await getClient().query({ query: GET_COLLECTIONS });
+  /* const { data } = await getClient().query({ query: GET_COLLECTIONS }); */
   return (
     <Page title="Homepage">
       <div className="grid grid-cols-3 gap-8">
-        {data.collections.map((collection: Collection) => (
+        {/* {data.collections.map((collection: Collection) => (
           <CollectionCard key={collection.id} collection={collection} />
-        ))}
+        ))} */}
       </div>
+      ciao!
     </Page>
   );
 }
