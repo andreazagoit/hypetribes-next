@@ -8,7 +8,7 @@ import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
 
 const AccountPage = async () => {
-  const user = getCurrentUser();
+  const user = await getCurrentUser();
   if (!user) redirect("/account/login");
 
   return (
