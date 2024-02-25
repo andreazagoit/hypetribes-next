@@ -3,8 +3,8 @@ import Link from "next/link";
 import React from "react";
 import { getCurrentUser } from "../api/graphql/resolvers/user";
 
-const Header = () => {
-  const user: User = getCurrentUser()!;
+const Header = async () => {
+  const user: User = (await getCurrentUser()) as User;
 
   return (
     <header className="bg-blue-900 bg-opacity-75 backdrop-filter backdrop-blur-lg text-white py-4 px-6 fixed top-0 w-full z-10">
