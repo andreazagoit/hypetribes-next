@@ -53,7 +53,7 @@ export const loginWithGoogle = async (data: LoginWithGoogle) => {
   return userData;
 };
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = () => {
   const cookie = cookies().get("__session")?.value;
   if (!cookie) return;
   return verifyUserToken(cookie) as User;
