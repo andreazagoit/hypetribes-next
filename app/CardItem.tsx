@@ -18,9 +18,11 @@ const CardItem = ({ item }: IProps) => {
             alt={item.name}
           />
           <div>
+            <p className="text-blue-500 text-xs text-bold">
+              {item.releaseDate}
+            </p>
             <h1 className="text-xl font-bold mb-2">{item.name}</h1>
             <p className="mb-2 text-sm">{item.description}</p>
-            <p className="mb-2">{item.releaseDate}</p>
             <p className="font-bold">{item.price}</p>
           </div>
         </div>
