@@ -38,16 +38,26 @@ const AddComment = ({ itemId }: IProps) => {
   };
 
   return (
-    <div>
-      {itemId}
+    <div className="mt-4">
       <textarea
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 bg-gray-900"
+        rows={4}
         value={commentText}
         onChange={(e) => setCommentText(e.target.value)}
+        placeholder="Enter your comment..."
       />
-      <button onClick={handleAddComment} disabled={loading}>
-        Add Comment
+      <button
+        className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+        onClick={handleAddComment}
+        disabled={loading || commentText.trim() === ""}
+      >
+        {loading ? "Adding Comment..." : "Add Comment"}
       </button>
-      {error && <p>Error adding comment: {error.message}</p>}
+      {error && (
+        <p className="mt-2 text-red-500">
+          Error adding comment: {error.message}
+        </p>
+      )}
     </div>
   );
 };

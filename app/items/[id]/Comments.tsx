@@ -28,7 +28,7 @@ const Comments = ({ itemId }: IProps) => {
   return (
     <div>
       {data.comments.map((comment: Comment) => (
-        <div key={comment.id} style={{ border: "1px solid blue", padding: 8 }}>
+        <div key={comment.id} className="border-2 border-blue-500 p-4 mb-4">
           <p>{comment.text}</p>
         </div>
       ))}
