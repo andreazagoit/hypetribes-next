@@ -1,7 +1,6 @@
-import Card from "@/components/Card";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import Card from "@/components/Card";
 
 interface IProps {
   item: Item;
