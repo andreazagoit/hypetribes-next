@@ -8,7 +8,9 @@ interface IProps {
 const CollectionCard = ({ collection }: IProps) => {
   return (
     <Link href={`/collections/${collection.key}`}>
-      <Card title={collection.name}>ciao</Card>
+      <Card>
+        <h2 className="text-lg font-semibold">{collection.name}</h2>
+      </Card>
     </Link>
   );
 };

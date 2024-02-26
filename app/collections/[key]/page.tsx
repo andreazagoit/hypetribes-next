@@ -54,7 +54,7 @@ const CollectionsPage = async ({ params }: IProps) => {
           ))}
         </div>
         <h1>Items</h1>
-        <div className="grid grid-cols-3 gap-4 auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {collection.items.map((item: Item) => (
             <CardItem key={item.id} item={item} />
           ))}
