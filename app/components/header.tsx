@@ -2,6 +2,7 @@ import Container from "@/components/Container";
 import Link from "next/link";
 import React from "react";
 import { getCurrentUser } from "../api/graphql/resolvers/user";
+import Image from "next/image";
 
 const Header = () => {
   const user: User = getCurrentUser()!;
@@ -77,10 +78,12 @@ const Header = () => {
             ) : (
               <li>
                 <Link href="/account">
-                  <img
+                  <Image
                     src={user.picture}
-                    alt="Avatar"
-                    className="h-8 w-8 rounded-full"
+                    width={64}
+                    height={64}
+                    alt="Picture of the author"
+                    className="h-10 w-10 rounded-full"
                   />
                 </Link>
               </li>

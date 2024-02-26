@@ -7,8 +7,8 @@ interface IProps {
 
 const CollectionCard = ({ collection }: IProps) => {
   return (
-    <Link key={collection.id} href={`/collections/${collection.key}`}>
-      <Card title={collection.name} content="ciao!" />
+    <Link href={`/collections/${collection.key}`}>
+      <Card title={collection.name}>ciao</Card>
     </Link>
   );
 };

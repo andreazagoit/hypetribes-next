@@ -1,3 +1,5 @@
+import Card from "@/components/Card";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -8,22 +10,23 @@ interface IProps {
 const CardItem = ({ item }: IProps) => {
   return (
     <Link href={`/items/${item.id}`}>
-      <div
-        style={{
-          border: "2px solid white",
-          padding: 20,
-          background: "var(--background-dark)",
-        }}
-      >
-        <img
-          src={item.images[0] as string}
-          style={{ height: 400, width: 300 }}
-        />
-        <h1>{item.name}</h1>
-        <p>{item.description}</p>
-        <p>{item.releaseDate}</p>
-        <p>{item.price}</p>
-      </div>
+      <Card title={item.name}>
+        <div className="flex items-center justify-start border-2 border-white p-4 bg-background-dark">
+          <div className="relative h-48 w-36 mr-4">
+            <img
+              src={item.images[0] as string}
+              className="h-48 w-36 mr-4"
+              alt={item.name}
+            />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold mb-2">{item.name}</h1>
+            <p className="mb-2">{item.description}</p>
+            <p className="mb-2">{item.releaseDate}</p>
+            <p className="font-bold">{item.price}</p>
+          </div>
+        </div>
+      </Card>
     </Link>
   );
 };

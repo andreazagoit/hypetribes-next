@@ -12,22 +12,22 @@ interface Comment {
 interface Collection {
   id: ID!;
   key: string!;
-  name: String!;
+  name: string!;
   collections: [Collection]!;
   items: [Item]!;
 }
 
 interface Item {
   id: ID!;
-  name: String!;
-  description: String;
+  name: string!;
+  description: string;
   price: Float;
-  releaseDate: String;
-  images: String[];
+  releaseDate: string;
+  images: string[];
   collections: [Collection];
   comments: [Comment];
-  createdAt: String!;
-  updatedAt: String!;
+  createdAt: string!;
+  updatedAt: string!;
 }
 
 interface User {

@@ -5,7 +5,7 @@ const typeDefs = gql`
     items: [Item]!
     item(id: ID!): Item!
     collections: [Collection]!
-    collection(key: String): Collection!
+    collection(key: String!): Collection!
     comments(id: ID!): [Comment]!
     user: User!
   }

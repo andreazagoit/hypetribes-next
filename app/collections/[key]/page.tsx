@@ -1,6 +1,6 @@
 import CardItem from "@/app/CardItem";
 import CollectionCard from "@/app/CollectionCard";
-import Container from "@/components/Container";
+import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import React from "react";
@@ -40,46 +40,27 @@ const CollectionsPage = async ({ params }: IProps) => {
     variables: { key },
   });
 
+  console.log(key);
+
   const { collection }: { collection: Collection } = data;
 
   return (
-    <main style={{ background: "blue" }}>
-      <Container
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          padding: "1rem 0",
-        }}
-      >
-        <h1 style={{ color: "white", fontSize: 100 }}>{collection.name}</h1>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 20,
-          }}
-        >
+    <Page>
+      <div className="flex flex-col gap-4">
+        <h1 className="text-white text-4xl">{collection.name}</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {collection.collections.map((collection: Collection) => (
             <CollectionCard key={collection.id} collection={collection} />
           ))}
         </div>
         <h1>Items</h1>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 20,
-            alignItems: "stretch",
-            gridAutoRows: "1fr",
-          }}
-        >
+        <div className="grid grid-cols-3 gap-4 auto-rows-fr">
           {collection.items.map((item: Item) => (
             <CardItem key={item.id} item={item} />
           ))}
         </div>
-      </Container>
-    </main>
+      </div>
+    </Page>
   );
 };
 
