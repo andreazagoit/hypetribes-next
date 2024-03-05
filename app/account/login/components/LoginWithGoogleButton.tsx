@@ -17,9 +17,24 @@ const LoginWithGoogleButton = () => {
         new GoogleAuthProvider()
       );
 
-      const accessToken = userData.user.accessToken!;
+      const idToken = userData.user.accessToken!;
 
-      const client = makeClient();
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ idToken }),
+      });
+
+      const resBody = await response.json();
+
+      if (resBody.success === true) {
+        router.push("/account");
+        router.refresh();
+      }
+
+      /* const client = makeClient();
 
       const { data } = await client.mutate({
         mutation: gql`
@@ -39,7 +54,7 @@ const LoginWithGoogleButton = () => {
       const { email, id, name, picture, token } = data.loginWithGoogle;
       document.cookie = `__session=${token}; path=/;`;
       router.push("/account");
-      router.refresh();
+      router.refresh(); */
     } catch (error) {
       console.log(error);
     }

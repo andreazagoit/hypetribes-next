@@ -8,7 +8,7 @@ interface PageProps {
 
 const Page = ({ title, children }: PageProps) => {
   return (
-    <main className="pt-20">
+    <main className="pt-24">
       <Container>
         {title && (
           <h1 className="text-5xl font-bold mb-8">

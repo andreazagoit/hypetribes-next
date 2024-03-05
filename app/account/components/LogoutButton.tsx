@@ -6,14 +6,20 @@ import { useRouter } from "next/navigation";
 const LogoutButton = () => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    // Set the expiry date of the cookie to a past date
-    document.cookie =
-      "__session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  const handleLogout = async () => {
+    const response = await fetch("/api/auth/logout", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    // Optionally, perform any other logout actions (e.g., redirecting the user)
-    router.push("/account/login");
-    router.refresh();
+    const resBody = await response.json();
+
+    if (resBody.success === true) {
+      router.push("/account/login");
+      router.refresh();
+    }
   };
 
   return <PrimaryButton onClick={handleLogout}>Logout</PrimaryButton>;

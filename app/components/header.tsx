@@ -1,4 +1,3 @@
-import Container from "@/components/Container";
 import Link from "next/link";
 import React from "react";
 import { getCurrentUser } from "../api/graphql/resolvers/user";

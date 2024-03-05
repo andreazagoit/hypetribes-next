@@ -1,15 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { getCurrentUser } from "../api/graphql/resolvers/user";
 import { redirect } from "next/navigation";
 import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
-
-interface Settings {
-  notifications: boolean;
-  darkMode: boolean;
-  language: string;
-  // Add more settings as needed
-}
 
 const AccountPage = () => {
   const user = getCurrentUser();
