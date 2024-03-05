@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
-import { getCurrentUser } from "../api/graphql/resolvers/user";
 import Image from "next/image";
+import { getCurrentUser } from "@/app/api/graphql/resolvers/user";
 
 const Header = () => {
   const user: User = getCurrentUser()!;
