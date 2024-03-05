@@ -3,14 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "rm -rf .next && next dev",
+    "build": "rm -rf .next && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker-build": "docker build -t nextjs-app .",
+    "docker-run": "docker run -p 3000:3000 nextjs-app"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.0-rc.2",
-    "@apollo/experimental-nextjs-app-support": "^0.5.2",
+    "@apollo/client": "^3.9.5",
+    "@apollo/experimental-nextjs-app-support": "^0.8.0",
     "@apollo/server": "^4.10.0",
     "@as-integrations/next": "^3.0.0",
     "@react-oauth/google": "^0.12.1",
