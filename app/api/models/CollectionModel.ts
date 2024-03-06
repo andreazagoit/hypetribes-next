@@ -4,7 +4,7 @@ const collectionSchema = new Schema<Collection>(
   {
     key: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    collections: [{ type: Schema.Types.ObjectId, ref: "Collection" }],
+    collections: [{ type: String }],
   },
   { timestamps: true }
 );

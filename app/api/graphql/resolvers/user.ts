@@ -44,6 +44,7 @@ export const loginWithGoogle = async (data: LoginWithGoogle) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
       picture: user.picture,
     }),
   };

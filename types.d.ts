@@ -34,5 +34,6 @@ interface User {
   id: ID!;
   name: string!;
   email: string!;
+  role: "admin" | "editor" | "user";
   picture: string;
 }

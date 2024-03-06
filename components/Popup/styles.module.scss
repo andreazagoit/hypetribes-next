@@ -1,0 +1,26 @@
+.popup {
+  z-index: 801;
+  height: 40vh;
+  width: 40vw;
+  padding: 2rem;
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.overlayContainer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

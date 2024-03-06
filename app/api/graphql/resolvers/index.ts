@@ -5,6 +5,12 @@ import ItemModel from "../../models/itemModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { loginWithGoogle } from "./user";
+import {
+  addCollection,
+  checkCollectionsExist,
+  getCollection,
+  getCollections,
+} from "./collection";
 
 const resolvers = {
   Query: {
@@ -42,6 +48,7 @@ const resolvers = {
       return parent.comments;
     },
     collections: async (parent) => {
+      console.log("resolve");
       await parent.populate({
         path: "collections",
         model: CollectionModel,
@@ -63,7 +70,7 @@ const resolvers = {
     collections: async (parent: any) => {
       try {
         const collections = await CollectionModel.find({
-          collections: { $in: [parent.id] },
+          collections: { $in: [parent.key] },
         });
         return collections;
       } catch (error: any) {
@@ -101,29 +108,6 @@ const getItem = async (data: GetItemProps) => {
     }
 
     return item;
-  } catch (error: any) {
-    throw new Error(`Error getting item: ${error.message}`);
-  }
-};
-
-const getCollections = async () => {
-  try {
-    const collections = await CollectionModel.find({ key: "movie" });
-    return collections;
-  } catch (error: any) {
-    throw new Error(`Error getting item: ${error.message}`);
-  }
-};
-
-interface GetCollectionProps {
-  key: string;
-}
-
-const getCollection = async (data: GetCollectionProps) => {
-  const { key } = data;
-  try {
-    const collection = await CollectionModel.findOne({ key });
-    return collection;
   } catch (error: any) {
     throw new Error(`Error getting item: ${error.message}`);
   }
@@ -172,8 +156,32 @@ const addItem = async (data: AddItemProps) => {
     throw new Error("One or more collections do not exist in the database.");
   }
 
+  /* collections.forEach((collectionId) => {
+    collectionsIds.push(collectionId);
+  }); */
+
+  const collectionsKeys: string[] = ["test3"];
+  const foundParentCollectionIds = async (collectionKey) => {
+    const collection = await CollectionModel.find({ key: collectionKey });
+    /* collectionsKeys.push(collection) */
+    console.log("Current collection", collection);
+  };
+  foundParentCollectionIds("test3");
+
+  console.log("IDS", collectionsKeys);
+
+  console.log(
+    "AD ITEM",
+    name,
+    description,
+    price,
+    releaseDate,
+    images,
+    collections
+  );
+
   try {
-    const newItem = new ItemModel({
+    /* const newItem = new ItemModel({
       name,
       description,
       price,
@@ -181,33 +189,7 @@ const addItem = async (data: AddItemProps) => {
       images,
       collections,
     });
-    return await newItem.save();
-  } catch (error: any) {
-    throw new Error(`Error creating item: ${error.message}`);
-  }
-};
-
-interface AddCollectionProps {
-  key: string;
-  name: string;
-  collections: string[];
-}
-const addCollection = async (data: AddCollectionProps) => {
-  const { key, name, collections } = data;
-
-  try {
-    const areCollectionsValid = await checkCollectionsExist(collections);
-
-    if (!areCollectionsValid) {
-      throw new Error("One or more collections do not exist in the database.");
-    }
-
-    const newCollection = new CollectionModel({
-      key,
-      name,
-      collections,
-    });
-    return (await newCollection.save()) || [];
+    return await newItem.save(); */
   } catch (error: any) {
     throw new Error(`Error creating item: ${error.message}`);
   }
@@ -351,18 +333,6 @@ const addTestData = async () => {
     collections: getCollections(),
     items: [],
   };
-};
-
-const checkCollectionsExist = async (collectionsIds: string[]) => {
-  try {
-    const existingCollections = await CollectionModel.find({
-      _id: { $in: collectionsIds },
-    });
-
-    return existingCollections.length === collectionsIds.length;
-  } catch (error: any) {
-    throw new Error(`Error checking collections: ${error.message}`);
-  }
 };
 
 const getUser = async () => {

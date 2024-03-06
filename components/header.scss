@@ -1,0 +1,33 @@
+.header {
+  border-bottom: 1px solid #ccc;
+
+  .container {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__branding {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  &__menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    li {
+      font-size: 1.2rem;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

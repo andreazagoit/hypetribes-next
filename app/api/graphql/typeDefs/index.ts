@@ -4,6 +4,7 @@ const typeDefs = gql`
   type Query {
     items: [Item]!
     item(id: ID!): Item!
+    mainCollections: [Collection]!
     collections: [Collection]!
     collection(key: String!): Collection!
     comments(id: ID!): [Comment]!

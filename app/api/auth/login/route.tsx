@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
 
   // Check if user exist
   let user = await UserModel.findOne({ email });
+  console.log("user", user);
 
   if (user) {
     user.name = name; // Update name
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
     id: user.id,
     name: user.name,
     email: user.email,
+    role: user.role,
     picture: user.picture,
   });
 

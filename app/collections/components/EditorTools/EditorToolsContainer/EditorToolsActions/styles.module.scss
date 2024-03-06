@@ -1,0 +1,20 @@
+.container {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  button {
+    border: 1px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: white;
+      color: black;
+    }
+  }
+}

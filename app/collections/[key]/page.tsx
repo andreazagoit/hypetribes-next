@@ -4,6 +4,7 @@ import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import React from "react";
+import EditorTools from "../components/EditorTools";
 
 interface IProps {
   params: {
@@ -40,8 +41,6 @@ const CollectionsPage = async ({ params }: IProps) => {
     variables: { key },
   });
 
-  console.log(key);
-
   const { collection }: { collection: Collection } = data;
 
   return (
@@ -60,6 +59,7 @@ const CollectionsPage = async ({ params }: IProps) => {
           ))}
         </div>
       </div>
+      <EditorTools collectionKey={collection.key} />
     </Page>
   );
 };
