@@ -6,7 +6,6 @@ import { generateUserToken } from "@/utils/user";
 import { initAdmin } from "@/lib/firebase/admin";
 
 export async function POST(request: NextRequest) {
-  initAdmin();
   const reqBody = (await request.json()) as { idToken: string };
   const idToken = reqBody.idToken;
 
@@ -48,7 +47,7 @@ export async function POST(request: NextRequest) {
     path: "/",
     domain: `${
       process.env.NODE_ENV === "production"
-        ? `hypetribes.com/`
+        ? `hypetribes.com`
         : "http://localhost:3000"
     }`,
   });
