@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     path: "/",
     domain: `${
       process.env.NODE_ENV === "production"
-        ? `https://www.hypetribes.com/`
+        ? `hypetribes.com/`
         : "http://localhost:3000"
     }`,
   });
