@@ -10,7 +10,16 @@ export async function GET(request: NextRequest) {
   if (!sessionCookie)
     return NextResponse.json({ success: false }, { status: 400 });
 
-  cookies().delete("__session");
+  cookies().set("__session", "", {
+    maxAge: 0,
+    httpOnly: true,
+    secure: true,
+    domain: `${
+      process.env.NODE_ENV === "production"
+        ? `hypetribes.com`
+        : "http://localhost:3000"
+    }`,
+  });
 
   return NextResponse.json({
     success: true,
