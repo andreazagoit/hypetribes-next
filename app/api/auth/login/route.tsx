@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
     maxAge: expiresIn,
     httpOnly: true,
     secure: true,
+    path: "/",
     domain: `${
       process.env.NODE_ENV === "production"
         ? `https://www.hypetribes.com/`
