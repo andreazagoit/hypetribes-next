@@ -19,6 +19,7 @@ interface Collection {
 
 interface Item {
   id: ID!;
+  key: string!;
   name: string!;
   description: string;
   price: Float;

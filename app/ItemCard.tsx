@@ -6,16 +6,16 @@ interface IProps {
   item: Item;
 }
 
-const CardItem = ({ item }: IProps) => {
+const ItemCard = ({ item }: IProps) => {
   return (
-    <Link href={`/items/${item.id}`}>
+    <Link href={`/items/${item.key}`}>
       <Card>
         <div className="flex">
-          <img
+          {/* <img
             src={item.images[0] as string}
             className="h-48 w-36 mr-4"
             alt={item.name}
-          />
+          /> */}
           <div>
             <p className="text-blue-500 text-xs text-bold">
               {item.releaseDate}
@@ -30,4 +30,4 @@ const CardItem = ({ item }: IProps) => {
   );
 };
 
-export default CardItem;
+export default ItemCard;

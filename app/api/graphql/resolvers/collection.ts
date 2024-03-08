@@ -16,35 +16,52 @@ export const getCollections = async () => {
 interface AddCollectionProps {
   key: string;
   name: string;
-  collections: string[];
+  collections?: string[];
 }
 
 export const addCollection = async (data: AddCollectionProps) => {
-  const { key, name, collections } = data;
-  console.log("collections", collections);
+  const { key, name, collections = [] } = data;
 
   try {
-    // Check if all parent collections exist
-    const areCollectionsValid = await checkCollectionsExist(collections);
-    console.log("areCollectionsValid", areCollectionsValid, collections);
-    if (!areCollectionsValid)
-      throw new Error("One or more collections do not exist in the database.");
-
     // Check if name already exist
     const existingCollection = await CollectionModel.findOne({ key });
-    if (existingCollection) throw new Error("The name already exist");
+    if (existingCollection)
+      throw new Error("A collection with that key already exist");
 
+    // Get collections if valid
+    const parentCollections = await getCollectionsFromKeys(collections);
+
+    // Data is valid, create the collection
     const newCollection = new CollectionModel({
       key,
       name,
-      collections,
     });
 
-    console.log(newCollection);
-    return (await newCollection.save()) || [];
+    await newCollection.save();
+
+    // Save collection key to parents collections
+    await Promise.all(
+      parentCollections.map(async (collection) => {
+        collection.collections.push(newCollection.key);
+        await collection.save();
+      })
+    );
+
+    return newCollection;
   } catch (error: any) {
     throw new Error(`Error creating item: ${error.message}`);
   }
+};
+
+export const getCollectionsFromKeys = async (collectionKeys: string[]) => {
+  const collections = await CollectionModel.find({
+    key: { $in: collectionKeys },
+  });
+
+  if (collections.length !== collectionKeys.length) {
+    throw new Error(`Missing some keys`);
+  }
+  return collections;
 };
 
 export const checkCollectionsExist = async (collectionsKeys: string[]) => {
@@ -67,8 +84,9 @@ export const getCollection = async (data: GetCollectionProps) => {
   const { key } = data;
   try {
     const collection = await CollectionModel.findOne({ key });
+    if (!collection) throw new Error("No collection with that key found");
     return collection;
   } catch (error: any) {
-    throw new Error(`Error getting item: ${error.message}`);
+    throw new Error(`Error getting collection: ${error.message}`);
   }
 };

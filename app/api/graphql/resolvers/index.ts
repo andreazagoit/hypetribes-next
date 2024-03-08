@@ -4,40 +4,35 @@ import UserModel from "../../models/UserModel";
 import ItemModel from "../../models/itemModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { loginWithGoogle } from "./user";
-import {
-  addCollection,
-  checkCollectionsExist,
-  getCollection,
-  getCollections,
-} from "./collection";
+import { addCollection, getCollection, getCollections } from "./collection";
+import { addItem, getItem } from "./item";
 
 const resolvers = {
   Query: {
     // ITEMS
-    items: async () => getItems(),
+    // items: async () => getItems(),
     item: async (_, data) => getItem(data),
     // COLLECTIONS
-    collections: async () => getCollections(),
+    // collections: async () => getCollections(),
     collection: async (_, data) => getCollection(data),
     // COMMENTS
-    comments: async (_, data) => getComments(data),
+    // comments: async (_, data) => getComments(data),
     // USER
-    user: async () => getUser(),
+    // user: async () => getUser(),
   },
   Mutation: {
     // ITEMS
     addItem: async (_, data) => addItem(data),
     // COMMENTS
-    addComment: async (_, data) => addComment(data),
+    // addComment: async (_, data) => addComment(data),
     // COLLECTIONS
     addCollection: async (_, data) => addCollection(data),
     // TEST
-    addTestData: async () => addTestData(),
+    // addTestData: async () => addTestData(),
     // USER
-    registerWithCredentials: async (_, data) => registerWithCredentials(data),
-    loginWithCredentials: async (_, data) => loginWithCredentials(data),
-    loginWithGoogle: async (_, data) => loginWithGoogle(data),
+    // registerWithCredentials: async (_, data) => registerWithCredentials(data),
+    // loginWithCredentials: async (_, data) => loginWithCredentials(data),
+    // loginWithGoogle: async (_, data) => loginWithGoogle(data),
   },
   Item: {
     comments: async (parent) => {
@@ -48,7 +43,6 @@ const resolvers = {
       return parent.comments;
     },
     collections: async (parent) => {
-      console.log("resolve");
       await parent.populate({
         path: "collections",
         model: CollectionModel,
@@ -57,10 +51,58 @@ const resolvers = {
     },
   },
   Collection: {
-    items: async (parent: any) => {
+    items: async (parent) => {
       try {
-        const items = await ItemModel.find({ collections: { $in: parent.id } });
-        return items;
+        const result = await CollectionModel.aggregate([
+          // Match the document with the provided collection key
+          {
+            $match: { key: parent.key },
+          },
+          // Perform recursive lookup to fetch all items in this collection and its children
+          {
+            $graphLookup: {
+              from: "collections",
+              startWith: "$key",
+              connectFromField: "collections",
+              connectToField: "key",
+              as: "childCollections",
+              maxDepth: 10, // Adjust the depth as needed to avoid infinite loops
+            },
+          },
+          // Unwind the child collections
+          { $unwind: "$childCollections" },
+          // Lookup to fetch items in the child collections
+          {
+            $lookup: {
+              from: "items",
+              localField: "childCollections.items",
+              foreignField: "key",
+              as: "items",
+            },
+          },
+          // Unwind the items array
+          { $unwind: "$items" },
+          // Group to combine all items into a single array
+          {
+            $group: {
+              _id: null,
+              allItems: { $push: "$items" },
+            },
+          },
+          // Unwind the combined items array
+          { $unwind: "$allItems" },
+          // Replace root to reshape the output
+          {
+            $replaceRoot: { newRoot: "$allItems" },
+          },
+          {
+            $addFields: {
+              id: "$_id",
+            },
+          },
+        ]);
+
+        return result;
       } catch (error: any) {
         throw new Error(
           `Error fetching items for collection: ${error.message}`
@@ -70,13 +112,12 @@ const resolvers = {
     collections: async (parent: any) => {
       try {
         const collections = await CollectionModel.find({
-          collections: { $in: [parent.key] },
+          key: { $in: parent.collections },
         });
         return collections;
-      } catch (error: any) {
-        throw new Error(
-          `Error fetching items for collection: ${error.message}`
-        );
+      } catch (error) {
+        console.error("Error fetching collections:", error);
+        throw error;
       }
     },
   },
@@ -90,26 +131,6 @@ const getItems = async () => {
     return items;
   } catch (error: any) {
     throw new Error("Error fetching items: " + error.message);
-  }
-};
-
-interface GetItemProps {
-  id: string;
-}
-
-const getItem = async (data: GetItemProps) => {
-  const { id } = data;
-  try {
-    const item = await ItemModel.findById(id);
-
-    if (!item) {
-      console.error("Item not found");
-      return null;
-    }
-
-    return item;
-  } catch (error: any) {
-    throw new Error(`Error getting item: ${error.message}`);
   }
 };
 
@@ -135,63 +156,6 @@ const getComments = async (data: GetCommentsProps) => {
     return populatedItem.comments || [];
   } catch (error: any) {
     throw new Error(`Error getting item: ${error.message}`);
-  }
-};
-
-interface AddItemProps {
-  name: string;
-  description: string;
-  price: number;
-  releaseDate: string;
-  images: string[];
-  collections: string[];
-}
-
-const addItem = async (data: AddItemProps) => {
-  const { name, description, price, releaseDate, images, collections } = data;
-
-  const areCollectionsvalid = await checkCollectionsExist(collections);
-
-  if (!areCollectionsvalid) {
-    throw new Error("One or more collections do not exist in the database.");
-  }
-
-  /* collections.forEach((collectionId) => {
-    collectionsIds.push(collectionId);
-  }); */
-
-  const collectionsKeys: string[] = ["test3"];
-  const foundParentCollectionIds = async (collectionKey) => {
-    const collection = await CollectionModel.find({ key: collectionKey });
-    /* collectionsKeys.push(collection) */
-    console.log("Current collection", collection);
-  };
-  foundParentCollectionIds("test3");
-
-  console.log("IDS", collectionsKeys);
-
-  console.log(
-    "AD ITEM",
-    name,
-    description,
-    price,
-    releaseDate,
-    images,
-    collections
-  );
-
-  try {
-    /* const newItem = new ItemModel({
-      name,
-      description,
-      price,
-      releaseDate,
-      images,
-      collections,
-    });
-    return await newItem.save(); */
-  } catch (error: any) {
-    throw new Error(`Error creating item: ${error.message}`);
   }
 };
 

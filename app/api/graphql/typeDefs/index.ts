@@ -3,7 +3,7 @@ import { gql } from "graphql-tag";
 const typeDefs = gql`
   type Query {
     items: [Item]!
-    item(id: ID!): Item!
+    item(key: String!): Item!
     mainCollections: [Collection]!
     collections: [Collection]!
     collection(key: String!): Collection!
@@ -12,19 +12,15 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addItem(
-      name: String!
-      description: String
-      price: Float
-      releaseDate: String
-      collections: [String]!
-    ): Item
+    addItem(key: String!, name: String!, collections: [String!]!): Item!
     addComment(id: ID!, text: String!): Comment
+
     addCollection(
       key: String!
       name: String!
-      collections: [String]!
-    ): Collection
+      collections: [String]
+    ): Collection!
+
     addTestData: AddTestData
     registerWithCredentials(
       name: String!
@@ -45,6 +41,7 @@ const typeDefs = gql`
 
   type Item {
     id: ID!
+    key: String!
     name: String!
     description: String
     price: Float

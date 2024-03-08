@@ -1,16 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
-const collectionSchema = new Schema<Collection>(
-  {
-    key: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
-    collections: [{ type: String }],
-  },
-  { timestamps: true }
-);
+const collectionSchema = new Schema({
+  key: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  collections: [{ type: String }],
+  items: [{ type: String }],
+});
 
 const CollectionModel =
-  mongoose.models.Collection ||
-  mongoose.model<Collection>("Collection", collectionSchema);
+  mongoose.models.Collection || mongoose.model("Collection", collectionSchema);
 
 export default CollectionModel;
