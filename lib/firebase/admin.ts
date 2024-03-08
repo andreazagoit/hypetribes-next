@@ -30,6 +30,7 @@ export function createFirebaseAdminApp(params: FirebaseAdminAppParams) {
 }
 
 export async function initAdmin() {
+  console.log("init admin app");
   const params: FirebaseAdminAppParams = {
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID as string,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL as string,

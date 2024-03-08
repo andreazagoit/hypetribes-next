@@ -3,8 +3,10 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import UserModel from "../../models/UserModel";
 import { generateUserToken } from "@/utils/user";
+import { initAdmin } from "@/lib/firebase/admin";
 
 export async function POST(request: NextRequest) {
+  initAdmin();
   const reqBody = (await request.json()) as { idToken: string };
   const idToken = reqBody.idToken;
 
