@@ -267,7 +267,7 @@ const addTestData = async () => {
     collections: [movieCollection.id],
   });
 
-  const upcomingMoviesItems = await Promise.all(
+  /* const upcomingMoviesItems = await Promise.all(
     upcomingMovies.results.map(async (result: any) => {
       const item = await addItem({
         name: result.title,
@@ -279,7 +279,7 @@ const addTestData = async () => {
       });
       return item;
     })
-  );
+  ); */
 
   // Create a collection for each genre
   const genreCollections = await Promise.all(
