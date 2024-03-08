@@ -45,12 +45,7 @@ export async function POST(request: NextRequest) {
     maxAge: expiresIn,
     httpOnly: true,
     secure: true,
-    path: "/",
-    domain: `${
-      process.env.NODE_ENV === "production"
-        ? `hypetribes.com`
-        : "http://localhost:3000"
-    }`,
+    sameSite: "none",
   });
 
   return NextResponse.json({
