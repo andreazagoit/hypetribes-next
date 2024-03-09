@@ -26,11 +26,7 @@ export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({
-      uri: `${
-        process.env.NODE_ENV === "production"
-          ? `https://hypetribes.com`
-          : "http://localhost:3000"
-      }/api/graphql`,
+      uri: process.env.NEXT_PUBLIC_URL_API,
     }),
   });
 });
