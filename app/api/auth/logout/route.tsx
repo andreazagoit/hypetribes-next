@@ -1,8 +1,5 @@
-import { getAuth } from "firebase-admin/auth";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import UserModel from "../../models/UserModel";
-import { generateUserToken } from "@/utils/user";
 
 export async function GET(request: NextRequest) {
   const sessionCookie = cookies().get("__session")?.value;
@@ -15,9 +12,7 @@ export async function GET(request: NextRequest) {
     httpOnly: true,
     secure: true,
     domain: `${
-      process.env.NODE_ENV === "production"
-        ? `hypetribes.com`
-        : "http://localhost:3000"
+      process.env.NODE_ENV === "production" ? `hypetribes.com` : "localhost"
     }`,
   });
 

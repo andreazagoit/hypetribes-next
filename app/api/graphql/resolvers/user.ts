@@ -1,12 +1,26 @@
 import { generateUserToken, verifyUserToken } from "@/utils/user";
 import UserModel from "../../models/UserModel";
-import { initAdmin } from "@/lib/firebase/admin";
 import { getAuth } from "firebase-admin/auth";
 import { cookies } from "next/headers";
 
 /* const { OAuth2Client } = require("google-auth-library"); */
 
-await initAdmin();
+export const getUser = async ({ context }) => {
+  const user = getUserFromContext(context);
+
+  return user;
+};
+
+const getUserFromContext = (context) => {
+  const authorizationHeader = context.req.headers.get("authorization");
+  if (authorizationHeader) {
+    const token = authorizationHeader.replace("Bearer ", "");
+    const user = verifyUserToken(token);
+    return user;
+  } else {
+    return null;
+  }
+};
 
 interface LoginWithGoogle {
   accessToken: string;

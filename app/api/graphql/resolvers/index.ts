@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { addCollection, getCollection, getCollections } from "./collection";
 import { addItem, getItem } from "./item";
+import { getUser } from "./user";
 
 const resolvers = {
   Query: {
@@ -18,7 +19,7 @@ const resolvers = {
     // COMMENTS
     // comments: async (_, data) => getComments(data),
     // USER
-    // user: async () => getUser(),
+    user: async (parent, data, context) => getUser({ context }),
   },
   Mutation: {
     // ITEMS
@@ -296,12 +297,6 @@ const addTestData = async () => {
   return {
     collections: getCollections(),
     items: [],
-  };
-};
-
-const getUser = async () => {
-  return {
-    mail: "andrea@test.com",
   };
 };
 

@@ -11,6 +11,8 @@ const userSchema = new Schema(
       required: true,
     },
     picture: { type: String },
+    favoriteItems: [{ type: String }],
+    favoriteCollections: [{ type: String }],
   },
   { timestamps: true }
 );

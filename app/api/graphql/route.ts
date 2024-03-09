@@ -8,6 +8,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin
 import mongoose from "mongoose"; // Import Mongoose
 
 // Connect to MongoDB
+
 mongoose
   .connect(
     "mongodb+srv://admin:h1LxqZ3rv0skoBZT@cluster0.sdbpxio.mongodb.net/?retryWrites=true&w=majority"

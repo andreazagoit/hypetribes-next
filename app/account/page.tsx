@@ -3,8 +3,33 @@ import { getCurrentUser } from "../api/graphql/resolvers/user";
 import { redirect } from "next/navigation";
 import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
+import { getClient } from "@/lib/client";
+import gql from "graphql-tag";
+import { cookies } from "next/headers";
 
-const AccountPage = () => {
+const GET_USER = gql`
+  query User {
+    user {
+      id
+      name
+      email
+      picture
+    }
+  }
+`;
+
+const AccountPage = async () => {
+  const session = cookies().get("__session")?.value;
+
+  const { data } = await getClient().query({
+    query: GET_USER,
+    context: {
+      headers: {
+        authorization: `Bearer ${session}`,
+      },
+    },
+  });
+
   const user = getCurrentUser();
   if (!user) redirect("/account/login");
 
@@ -13,7 +38,9 @@ const AccountPage = () => {
       <div className="flex flex-col items-start gap-6">
         {user && (
           <>
-            <h1 className="text-3xl font-semibold">Welcome back {user.name}</h1>
+            <h1 className="text-3xl font-semibold">
+              {/* Welcome back {JSON.stringify(data)} */}
+            </h1>
             <p className="text-gray-600">{user.email}</p>
             <div className="mt-4">
               <h2 className="text-xl font-semibold">Settings</h2>
@@ -32,7 +59,6 @@ const AccountPage = () => {
                     <option value="English">English</option>
                     <option value="Spanish">Spanish</option>
                     <option value="French">French</option>
-                    {/* Add more language options as needed */}
                   </select>
                 </div>
               </div>

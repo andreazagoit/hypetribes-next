@@ -1,4 +1,4 @@
-import ItemCard from "@/app/ItemCard";
+import ItemCard from "@/app/CardItem";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import Link from "next/link";
@@ -40,7 +40,7 @@ const CollectionItemCarousel = async ({ collectionKey }: IProps) => {
         </h3>
         <Link href={`/collections/${data.collection.key}`}>Vedi tutto</Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {data.collection.items.map((item, index) => (
           <ItemCard key={index} item={item} />
         ))}

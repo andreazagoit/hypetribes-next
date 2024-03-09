@@ -1,9 +1,9 @@
+import ItemCard from "@/app/CardItem";
 import CollectionCard from "@/app/CollectionCard";
 import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import React from "react";
-import ItemCard from "@/app/ItemCard";
 
 interface IProps {
   params: {
@@ -53,7 +53,7 @@ const CollectionsPage = async ({ params }: IProps) => {
       {data.collection.items.length > 0 && (
         <>
           <h3 className="text-xl font-bold mb-4">Items</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
             {data.collection.items.map((item) => (
               <ItemCard key={item.key} item={item} />
             ))}

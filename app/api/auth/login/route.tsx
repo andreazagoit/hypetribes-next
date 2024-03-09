@@ -46,9 +46,7 @@ export async function POST(request: NextRequest) {
     httpOnly: true,
     secure: true,
     domain: `${
-      process.env.NODE_ENV === "production"
-        ? `hypetribes.com`
-        : "http://localhost:3000"
+      process.env.NODE_ENV === "production" ? `hypetribes.com` : "localhost"
     }`,
   });
 
