@@ -82,6 +82,7 @@ interface GetCollectionProps {
 
 export const getCollection = async (data: GetCollectionProps) => {
   const { key } = data;
+  console.log("GETTING COLLECTION", key);
   try {
     const collection = await CollectionModel.findOne({ key });
     if (!collection) throw new Error("No collection with that key found");
