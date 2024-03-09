@@ -7,7 +7,7 @@ export default async function Home() {
 
   return (
     <Page title="Homepage">
-      'Homepage'
+      Homepage
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {collections.map((collection) => (
           <CollectionItemCarousel key={collection} collectionKey={collection} />
