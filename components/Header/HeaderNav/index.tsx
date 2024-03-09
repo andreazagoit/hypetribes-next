@@ -33,7 +33,7 @@ const HeaderNav = ({ user }: IProps) => {
         {!user?.picture ? (
           <li>
             <Link
-              href="/account"
+              href="/account/login"
               className={`${styles.headerNavLink} ${
                 "/account/login" === pathname ? styles.active : ""
               }`}
