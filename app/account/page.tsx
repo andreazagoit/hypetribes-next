@@ -30,7 +30,7 @@ const AccountPage = async () => {
     },
   });
 
-  const user = getCurrentUser();
+  const user = data.user;
   if (!user) redirect("/account/login");
 
   return (
