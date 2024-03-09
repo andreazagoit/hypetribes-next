@@ -53,7 +53,7 @@ const CollectionsPage = async ({ params }: IProps) => {
       {data.collection.items.length > 0 && (
         <>
           <h3 className="text-xl font-bold mb-4">Items</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
             {data.collection.items.map((item) => (
               <ItemCard key={item.key} item={item} />
             ))}
