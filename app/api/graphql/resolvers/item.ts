@@ -1,6 +1,7 @@
-import CollectionModel from "../../models/CollectionModel";
+import UserModel from "../../models/UserModel";
 import ItemModel from "../../models/itemModel";
 import { getCollectionsFromKeys } from "./collection";
+import { getUserFromContext } from "./user";
 
 interface GetItemProps {
   key: string;
@@ -20,22 +21,33 @@ export const getItem = async (data: GetItemProps) => {
 };
 
 interface AddItemProps {
-  key: string;
-  name: string;
-  collections?: string[];
-  /* description: string;
-  price: number;
-  releaseDate: string;
-  images: string[];
-  collections: string[]; */
+  data: {
+    key: string;
+    name: string;
+    collections: string[];
+    description?: string;
+    images?: string[];
+    releaseDate?: string;
+    releasePlatforms?: {
+      name: string;
+      url: string;
+      price: number;
+    }[];
+  };
+  context: any;
 }
 
-export const addItem = async (data: AddItemProps) => {
+export const addItem = async ({ data, context }: AddItemProps) => {
   const {
     key,
     name,
-    collections = [] /* description, price, releaseDate, images, collections */,
+    collections,
+    description,
+    images = ["/assets/images/no_photo.jpg"],
+    releaseDate,
+    releasePlatforms = [],
   } = data;
+  const user = getUserFromContext(context);
 
   try {
     const existingItem = await ItemModel.findOne({ key });
@@ -48,7 +60,14 @@ export const addItem = async (data: AddItemProps) => {
     const newItem = new ItemModel({
       key,
       name,
+      description,
+      author: user.id,
+      images,
+      releaseDate,
+      releasePlatforms,
     });
+
+    console.log(newItem);
 
     await newItem.save();
 

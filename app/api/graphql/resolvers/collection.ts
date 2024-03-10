@@ -1,4 +1,5 @@
 import CollectionModel from "../../models/CollectionModel";
+import { getUserFromContext } from "./user";
 
 export const getCollections = async () => {
   const mainCollectionsKeys = ["movie", "luxury"];
@@ -14,13 +15,18 @@ export const getCollections = async () => {
 };
 
 interface AddCollectionProps {
-  key: string;
-  name: string;
-  collections?: string[];
+  data: {
+    key: string;
+    name: string;
+    collections?: string[];
+  };
+  context: any;
 }
 
-export const addCollection = async (data: AddCollectionProps) => {
+export const addCollection = async ({ data, context }: AddCollectionProps) => {
   const { key, name, collections = [] } = data;
+
+  const user = getUserFromContext(context);
 
   try {
     // Check if name already exist
@@ -35,6 +41,7 @@ export const addCollection = async (data: AddCollectionProps) => {
     const newCollection = new CollectionModel({
       key,
       name,
+      author: user.id,
     });
 
     await newCollection.save();

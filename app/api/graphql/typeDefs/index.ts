@@ -7,12 +7,21 @@ const typeDefs = gql`
     mainCollections: [Collection]!
     collections: [Collection]!
     collection(key: String!): Collection!
+    collectionTimeline(key: String!): Collection!
     comments(id: ID!): [Comment]!
     user: User!
   }
 
   type Mutation {
-    addItem(key: String!, name: String!, collections: [String!]!): Item!
+    addItem(
+      key: String!
+      name: String!
+      collections: [String]!
+      description: String
+      images: [String]
+      releaseDate: String
+      releasePlatforms: [RelasePlatformInput]
+    ): Item!
     addComment(id: ID!, text: String!): Comment
 
     addCollection(
@@ -21,20 +30,31 @@ const typeDefs = gql`
       collections: [String]
     ): Collection!
 
-    addTestData: AddTestData
+    addTestData: String!
     registerWithCredentials(
       name: String!
       email: String!
       password: String!
     ): User!
-    loginWithCredentials(email: String!, password: String!): User!
-    loginWithGoogle(accessToken: String!): User
+  }
+
+  input RelasePlatformInput {
+    name: String!
+    url: String
+    price: String
+  }
+
+  type RelasePlatform {
+    name: String!
+    url: String
+    price: String
   }
 
   type Collection {
     id: ID!
     key: String!
     name: String!
+    author: User
     items: [Item]!
     collections: [Collection]!
   }
@@ -44,21 +64,15 @@ const typeDefs = gql`
     key: String!
     name: String!
     description: String
-    price: Float
+    author: User
+    images: [String]!
     releaseDate: String
-    images: [String]
-    collections: [Collection]
-    comments: [Comment]
+    releasePlatforms: [RelasePlatform]!
   }
 
   type Comment {
     id: ID!
     text: String!
-  }
-
-  type AddTestData {
-    collections: [Collection]
-    items: [Item]
   }
 
   type User {

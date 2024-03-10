@@ -7,18 +7,17 @@ import { cookies } from "next/headers";
 
 export const getUser = async ({ context }) => {
   const user = getUserFromContext(context);
-
   return user;
 };
 
-const getUserFromContext = (context) => {
-  const authorizationHeader = context.req.headers.get("authorization");
-  if (authorizationHeader) {
+export const getUserFromContext = (context) => {
+  try {
+    const authorizationHeader = context.req.headers.get("authorization");
     const token = authorizationHeader.replace("Bearer ", "");
     const user = verifyUserToken(token);
-    return user;
-  } else {
-    return null;
+    return user as User;
+  } catch (error) {
+    throw new Error("Wrong user");
   }
 };
 

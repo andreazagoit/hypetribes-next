@@ -9,7 +9,10 @@ interface IProps {
   user: User | undefined;
 }
 
-const links = [{ name: "Home", path: "/" }];
+const links = [
+  { name: "Relases", path: "/" },
+  { name: "Categories", path: "/collections" },
+];
 
 const HeaderNav = ({ user }: IProps) => {
   const pathname = usePathname();

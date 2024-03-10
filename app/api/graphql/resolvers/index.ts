@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { addCollection, getCollection, getCollections } from "./collection";
 import { addItem, getItem } from "./item";
-import { getUser } from "./user";
+import { getUser, getUserFromContext } from "./user";
 
 const resolvers = {
   Query: {
@@ -16,6 +16,7 @@ const resolvers = {
     // COLLECTIONS
     // collections: async () => getCollections(),
     collection: async (_, data) => getCollection(data),
+    collectionTimeline: async (_, data) => getCollection(data),
     // COMMENTS
     // comments: async (_, data) => getComments(data),
     // USER
@@ -23,32 +24,41 @@ const resolvers = {
   },
   Mutation: {
     // ITEMS
-    addItem: async (_, data) => addItem(data),
+    addItem: async (_, data, context) => addItem({ data, context }),
     // COMMENTS
     // addComment: async (_, data) => addComment(data),
     // COLLECTIONS
-    addCollection: async (_, data) => addCollection(data),
+    addCollection: async (_, data, context) => addCollection({ data, context }),
     // TEST
-    // addTestData: async () => addTestData(),
+    addTestData: async (parent, data, context) => addTestData({ context }),
     // USER
     // registerWithCredentials: async (_, data) => registerWithCredentials(data),
     // loginWithCredentials: async (_, data) => loginWithCredentials(data),
     // loginWithGoogle: async (_, data) => loginWithGoogle(data),
   },
   Item: {
-    comments: async (parent) => {
+    /* comments: async (parent) => {
       await parent.populate({
         path: "comments",
         model: CommentModel,
       });
       return parent.comments;
-    },
-    collections: async (parent) => {
+    }, */
+    /* collections: async (parent) => {
       await parent.populate({
         path: "collections",
         model: CollectionModel,
       });
       return parent.collections;
+    }, */
+    author: async (parent: any) => {
+      try {
+        const user = await UserModel.findById(parent.author);
+        return user;
+      } catch (error) {
+        console.error("Error fetching collection author", error);
+        throw error;
+      }
     },
   },
   Collection: {
@@ -86,15 +96,13 @@ const resolvers = {
           // Group to combine all items into a single array
           {
             $group: {
-              _id: null,
-              allItems: { $push: "$items" },
+              _id: "$items.key", // Group by a unique identifier field
+              item: { $first: "$items" }, // Keep the first occurrence of each item
             },
           },
-          // Unwind the combined items array
-          { $unwind: "$allItems" },
           // Replace root to reshape the output
           {
-            $replaceRoot: { newRoot: "$allItems" },
+            $replaceRoot: { newRoot: "$item" },
           },
           {
             $addFields: {
@@ -118,6 +126,15 @@ const resolvers = {
         return collections;
       } catch (error) {
         console.error("Error fetching collections:", error);
+        throw error;
+      }
+    },
+    author: async (parent: any) => {
+      try {
+        const user = await UserModel.findById(parent.author);
+        return user;
+      } catch (error) {
+        console.error("Error fetching collection author", error);
         throw error;
       }
     },
@@ -187,117 +204,51 @@ const addComment = async (data: AddCommentProps) => {
   }
 };
 
-const addTestData = async () => {
+const addTestData = async ({ context }) => {
+  const user = getUserFromContext(context);
+
   // Reset database
   await CollectionModel.deleteMany({});
   await ItemModel.deleteMany({});
   await CommentModel.deleteMany({});
 
-  // GET GENRES
-  const getGenres = async () => {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMGE1M2VmNTc5YWYxY2Q4NTE1MGJkN2VmNmM5MGY3MCIsInN1YiI6IjY1YWM4M2VkYmQ1ODhiMDEwYjVjNjVlOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oV0BquZrShrc67aAa9AVKKMbazDZgNMbiXp8CEUFVNY",
-      },
-    };
+  const collectionsToAdd = [
+    { key: "luxury", name: "Luxury" },
+    { key: "gucci", name: "Gucci", collections: ["luxury"] },
+    { key: "dior", name: "Dior", collections: ["luxury"] },
+    { key: "movies", name: "Movies" },
+    { key: "movies_horror", name: "Horror Movies", collections: ["movies"] },
+    { key: "movies_action", name: "Action Movies", collections: ["movies"] },
+    {
+      key: "movies_adventure",
+      name: "Adventure Movies",
+      collections: ["movies"],
+    },
+  ];
 
-    try {
-      const response = await fetch(
-        "https://api.themoviedb.org/3/genre/movie/list?language=en",
-        options
-      );
+  for (const collection of collectionsToAdd) {
+    await addCollection({ data: collection, context });
+  }
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  const itemsToAdd = [
+    {
+      key: "godzilla-e-kong-il-nuovo-impero",
+      name: "Godzilla e Kong - Il nuovo impero",
+      description:
+        "Due antichi titani, Godzilla e Kong, si scontrano in un'epica battaglia mentre gli umani svelano le loro origini intrecciate e il loro legame con i misteri dell'Isola del Teschio.",
+      images: ["https://pad.mymovies.it/filmclub/2022/11/017/locandina.jpg"],
+      releaseDate: "28-03-2024",
+      collections: ["movies_action", "movies_adventure"],
+    },
+    { key: "gucci-item-2", name: "Gucci 1", collections: ["gucci"] },
+    { key: "gucci-item-3", name: "Gucci 1", collections: ["gucci"] },
+  ];
 
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching genres:", error);
-      throw error;
-    }
-  };
-  const { genres } = await getGenres();
+  for (const item of itemsToAdd) {
+    await addItem({ data: item, context });
+  }
 
-  // GET UPCOMING MOVIES
-  const getUpcomingMovie = async () => {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMGE1M2VmNTc5YWYxY2Q4NTE1MGJkN2VmNmM5MGY3MCIsInN1YiI6IjY1YWM4M2VkYmQ1ODhiMDEwYjVjNjVlOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oV0BquZrShrc67aAa9AVKKMbazDZgNMbiXp8CEUFVNY",
-      },
-    };
-
-    try {
-      const response = await fetch(
-        "https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1",
-        options
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching genres:", error);
-      throw error;
-    }
-  };
-
-  const upcomingMovies = await getUpcomingMovie();
-
-  // Add test data
-
-  const movieCollection: Collection = await addCollection({
-    key: "movie",
-    name: "Movies",
-    collections: [],
-  });
-
-  const movieUpcomingCollection = await addCollection({
-    key: "movie-upcoming",
-    name: "Upcoming movies",
-    collections: [movieCollection.id],
-  });
-
-  /* const upcomingMoviesItems = await Promise.all(
-    upcomingMovies.results.map(async (result: any) => {
-      const item = await addItem({
-        name: result.title,
-        description: result.overview,
-        price: 0,
-        releaseDate: result.release_date,
-        images: [`https://image.tmdb.org/t/p/original${result.poster_path}`],
-        collections: [movieUpcomingCollection.id],
-      });
-      return item;
-    })
-  ); */
-
-  // Create a collection for each genre
-  const genreCollections = await Promise.all(
-    genres.map(async (genre: { id: number; name: string }) => {
-      const collection = await addCollection({
-        key: `movie-${genre.name.toLocaleLowerCase().split(" ").join("_")}`,
-        name: genre.name,
-        collections: [movieCollection.id],
-      });
-      return collection;
-    })
-  );
-
-  return {
-    collections: getCollections(),
-    items: [],
-  };
+  return "done";
 };
 
 interface RegisterWithCredentialsProps {

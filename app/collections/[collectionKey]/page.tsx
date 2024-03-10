@@ -3,6 +3,7 @@ import CollectionCard from "@/app/CollectionCard";
 import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
+import Image from "next/image";
 import React from "react";
 
 interface IProps {
@@ -17,6 +18,11 @@ const GET_COLLECTION = gql`
       id
       key
       name
+      author {
+        id
+        name
+        picture
+      }
       collections {
         id
         key
@@ -26,6 +32,7 @@ const GET_COLLECTION = gql`
         id
         key
         name
+        images
       }
     }
   }
@@ -39,7 +46,23 @@ const CollectionsPage = async ({ params }: IProps) => {
   });
 
   return (
-    <Page title={data.collection.name}>
+    <Page
+      title={data.collection.name}
+      actions={
+        <>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <p>{data.collection.author.name}</p>
+            <Image
+              src={data.collection.author.picture}
+              width={64}
+              height={64}
+              alt="Picture of the author"
+              className="h-10 w-10 rounded-full"
+            />
+          </div>
+        </>
+      }
+    >
       {data.collection.collections.length > 0 && (
         <>
           <h3 className="text-xl font-bold mb-4">Collections</h3>

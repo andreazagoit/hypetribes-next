@@ -1,8 +1,10 @@
+"use client";
 import ItemCard from "@/app/CardItem";
 import { getClient } from "@/lib/client";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 interface IProps {
   collectionKey: string;
@@ -18,16 +20,21 @@ const GET_COLLECTION = gql`
         id
         key
         name
+        images
+        releaseDate
       }
     }
   }
 `;
 
-const CollectionItemCarousel = async ({ collectionKey }: IProps) => {
-  const { data } = await getClient().query({
-    query: GET_COLLECTION,
+const CollectionItemCarousel = ({ collectionKey }: IProps) => {
+  const { loading, error, data } = useQuery(GET_COLLECTION, {
     variables: { key: collectionKey },
   });
+  const [page, setPage] = useState(1);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>

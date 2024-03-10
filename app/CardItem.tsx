@@ -16,7 +16,7 @@ const ItemCard = ({ item }: IProps) => {
             style={{ position: "relative", width: "100%", paddingTop: "100%" }}
           >
             <Image
-              src="/assets/images/no_photo.jpg"
+              src={item.images[0]}
               alt="item"
               layout="fill"
               objectFit="contain"
@@ -24,10 +24,10 @@ const ItemCard = ({ item }: IProps) => {
             />
           </div>
           <div>
-            <p className="text-blue-500 text-xs text-bold ">
+            <p className="text-blue-500 text-xs text-bold mt-2">
               {item.releaseDate}
             </p>
-            <h1 className="text-xl font-bold mb-2 mt-2">{item.name}</h1>
+            <h1 className="font-bold mb-2">{item.name}</h1>
             <p className="mb-2 text-sm">{item.description}</p>
             <p className="font-bold">{item.price}</p>
           </div>

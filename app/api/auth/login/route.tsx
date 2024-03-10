@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 
   // Check if user exist
   let user = await UserModel.findOne({ email });
-  console.log("user", user);
 
   if (user) {
     user.name = name; // Update name
