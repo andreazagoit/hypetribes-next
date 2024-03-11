@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import ItemCard from "@/app/CardItem";
 import CollectionCard from "@/app/CollectionCard";
 import Page from "@/components/Page";
