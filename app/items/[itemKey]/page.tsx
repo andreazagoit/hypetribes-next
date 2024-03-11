@@ -44,7 +44,10 @@ const ItemsPage = async ({ params }: IProps) => {
   const { item } = data satisfies Item;
   return (
     <Page>
-      <div className="bg-blue-500 dark:bg-blue-900 text-white dark:text-gray-200 py-8">
+      <div
+        className="bg-blue-900 bg-opacity-75 backdrop-filter backdrop-blur-lg text-white dark:bg-gray-800 dark:bg-opacity-75 dark:text-white py-4 px-6"
+        style={{ borderRadius: 20 }}
+      >
         <Container>
           <div className="flex gap-4">
             <img

@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 import Container from "./Container";
+import DatePicker from "./DatePicker";
+import NotificationProvider from "./NotificationProvider";
 
 interface PageProps {
   title?: string;
@@ -9,7 +11,9 @@ interface PageProps {
 
 const Page = ({ title, actions, children }: PageProps) => {
   return (
-    <main className="pt-24">
+    <main className="pt-24 pb-20">
+      {/* <DatePicker /> */}
+      <NotificationProvider />
       <Container>
         <div
           style={{
@@ -18,11 +22,7 @@ const Page = ({ title, actions, children }: PageProps) => {
             gap: "1rem",
           }}
         >
-          {title && (
-            <h1 className="text-5xl font-bold mb-8">
-              <span className="text-blue-500 px-2">{title}</span>
-            </h1>
-          )}
+          {title && <h1 className="text-5xl font-bold mb-8">{title}</h1>}
           <div>{actions}</div>
         </div>
         <div>{children}</div>

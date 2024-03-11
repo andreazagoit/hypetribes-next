@@ -1,7 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["lh3.googleusercontent.com", "image.tmdb.org", "pad.mymovies.it"],
+    domains: [
+      "lh3.googleusercontent.com",
+      "image.tmdb.org",
+      "pad.mymovies.it",
+      "movieplayer.net-cdn.it",
+      "m.media-amazon.com",
+      "www.ingenerecinema.com",
+    ],
   },
   async headers() {
     return [

@@ -4,7 +4,12 @@ import UserModel from "../../models/UserModel";
 import ItemModel from "../../models/itemModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { addCollection, getCollection, getCollections } from "./collection";
+import {
+  addCollection,
+  getCollection,
+  getCollectionTimeline,
+  getCollections,
+} from "./collection";
 import { addItem, getItem } from "./item";
 import { getUser, getUserFromContext } from "./user";
 
@@ -16,7 +21,7 @@ const resolvers = {
     // COLLECTIONS
     // collections: async () => getCollections(),
     collection: async (_, data) => getCollection(data),
-    collectionTimeline: async (_, data) => getCollection(data),
+    collectionTimeline: async (_, data) => getCollectionTimeline(data),
     // COMMENTS
     // comments: async (_, data) => getComments(data),
     // USER
@@ -220,8 +225,18 @@ const addTestData = async ({ context }) => {
     { key: "movies_horror", name: "Horror Movies", collections: ["movies"] },
     { key: "movies_action", name: "Action Movies", collections: ["movies"] },
     {
+      key: "movies_romantic",
+      name: "Romantic Movies",
+      collections: ["movies"],
+    },
+    {
       key: "movies_adventure",
       name: "Adventure Movies",
+      collections: ["movies"],
+    },
+    {
+      key: "movies_commedy",
+      name: "Commedy Movies",
       collections: ["movies"],
     },
   ];
@@ -239,6 +254,37 @@ const addTestData = async ({ context }) => {
       images: ["https://pad.mymovies.it/filmclub/2022/11/017/locandina.jpg"],
       releaseDate: "28-03-2024",
       collections: ["movies_action", "movies_adventure"],
+    },
+    {
+      key: "la-passione-di-dodin-bouffant",
+      name: "La passione di Dodin Bouffant",
+      description:
+        "Le vite e le lotte di Eugenie, stimata cuoca, e Dodin, il buongustaio con cui ha lavorato negli ultimi vent'anni.",
+      images: [
+        "https://movieplayer.net-cdn.it/t/images/2024/02/20/passion-dodin-bouffant_jpg_400x0_crop_q85.jpg",
+      ],
+      releaseDate: "28-03-2024",
+      collections: ["movies_romantic"],
+    },
+    {
+      key: "gli-uomini-e-altri-inconvenienti",
+      name: "Gli uomini e altri inconvenienti",
+      images: [
+        "https://m.media-amazon.com/images/M/MV5BMzc2M2M1YzYtMmFhMC00Mzc3LWJjOGEtMTBhYjIzMjhhMGU2XkEyXkFqcGdeQXVyOTU5MDg2OQ@@._V1_.jpg",
+      ],
+      releaseDate: "03-04-2024",
+      collections: ["movies_commedy"],
+    },
+    {
+      key: "ghostbusters-minaccia-glaciale",
+      name: "Ghostbusters - Minaccia glaciale",
+      description:
+        "Quando la scoperta di un antico artefatto scatena una forza malvagia, gli Acchiappafantasmi vecchi e nuovi devono unire le forze per proteggere la loro casa e salvare il mondo da una seconda era glaciale.",
+      images: [
+        "https://www.ingenerecinema.com/wp-content/uploads/2023/12/412309022_903470824611981_6033100022399982508_n.jpg",
+      ],
+      releaseDate: "11-04-2024",
+      collections: ["movies_adventure"],
     },
     { key: "gucci-item-2", name: "Gucci 1", collections: ["gucci"] },
     { key: "gucci-item-3", name: "Gucci 1", collections: ["gucci"] },

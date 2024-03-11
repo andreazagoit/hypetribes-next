@@ -6,7 +6,7 @@ const CollectionsPage = () => {
   const collections = ["luxury", "movies"];
 
   return (
-    <Page>
+    <Page title="Categories">
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         {collections.map((collection) => (
           <CollectionItemCarousel key={collection} collectionKey={collection} />

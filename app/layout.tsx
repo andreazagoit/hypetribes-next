@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import { ApolloWrapper } from "@/lib/ApolloWrapper";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Header from "@/components/Header";
+import PopupProvider from "@/components/PopupProvider";
+import NotificationProvider from "@/components/NotificationProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +27,8 @@ export default function RootLayout({
         >
           <ApolloWrapper>
             <Header />
+            <NotificationProvider />
+            <PopupProvider />
             {children}
           </ApolloWrapper>
         </GoogleOAuthProvider>
