@@ -18,8 +18,9 @@ const NotificationProvider = () => {
           <div
             style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
           >
-            {notifications.map((notification) => (
+            {notifications.map((notification, i) => (
               <div
+                key={i}
                 style={{
                   background: (notification.type = "error" ? "red" : "green"),
                   padding: "1rem",
