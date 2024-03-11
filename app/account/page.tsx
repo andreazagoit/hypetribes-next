@@ -1,5 +1,4 @@
 import React from "react";
-import { getCurrentUser } from "../api/graphql/resolvers/user";
 import { redirect } from "next/navigation";
 import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
