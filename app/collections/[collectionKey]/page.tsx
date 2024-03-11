@@ -45,7 +45,7 @@ const CollectionsPage = async ({ params }: IProps) => {
   const { data } = await getClient().query({
     query: GET_COLLECTION,
     variables: { key: collectionKey },
-    fetchPolicy: "no-cache",
+    fetchPolicy: "cache-first",
   });
 
   return (

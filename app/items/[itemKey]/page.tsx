@@ -39,6 +39,7 @@ const ItemsPage = async ({ params }: IProps) => {
   const { data } = await getClient().query({
     query: GET_ITEM,
     variables: { key: itemKey },
+    fetchPolicy: "cache-first",
   });
 
   const { item } = data satisfies Item;
