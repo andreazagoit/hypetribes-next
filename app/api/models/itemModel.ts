@@ -4,7 +4,7 @@ const itemSchema = new Schema({
   key: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   description: { type: String },
-  author: { type: Schema.Types.ObjectId, ref: "User" },
+  author: { type: String, default: null },
   images: [{ type: String }],
   releaseDate: { type: String },
   releasePlatforms: {

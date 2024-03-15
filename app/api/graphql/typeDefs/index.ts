@@ -10,6 +10,7 @@ const typeDefs = gql`
     collectionTimeline(key: String!): Collection!
     comments(id: ID!): [Comment]!
     user: User!
+    entity(key: String!): Entity!
   }
 
   type Mutation {
@@ -36,6 +37,13 @@ const typeDefs = gql`
       email: String!
       password: String!
     ): User!
+
+    addEntity(
+      key: String!
+      name: String!
+      bio: String
+      picture: String
+    ): Entity!
   }
 
   input RelasePlatformInput {
@@ -54,7 +62,7 @@ const typeDefs = gql`
     id: ID!
     key: String!
     name: String!
-    author: User
+    author: Entity
     items: [Item]!
     collections: [Collection]!
   }
@@ -64,7 +72,7 @@ const typeDefs = gql`
     key: String!
     name: String!
     description: String
-    author: User
+    author: Entity
     images: [String]!
     releaseDate: String
     releasePlatforms: [RelasePlatform]!
@@ -77,10 +85,18 @@ const typeDefs = gql`
 
   type User {
     id: ID!
-    name: String!
     email: String!
-    picture: String
-    token: String!
+    entity: Entity!
+    role: String!
+  }
+
+  type Entity {
+    id: ID!
+    key: String!
+    name: String!
+    bio: String!
+    picture: String!
+    collections: [String]!
   }
 `;
 

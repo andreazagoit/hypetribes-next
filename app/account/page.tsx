@@ -1,18 +1,23 @@
 import React from "react";
-import { redirect } from "next/navigation";
-import LogoutButton from "./components/LogoutButton";
 import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const GET_USER = gql`
   query User {
     user {
       id
-      name
       email
-      picture
+      entity {
+        id
+        key
+        name
+        bio
+        picture
+      }
+      role
     }
   }
 `;
@@ -34,11 +39,11 @@ const AccountPage = async () => {
 
   return (
     <Page title="Account">
-      <div className="flex flex-col items-start gap-6">
+      {JSON.stringify(data)}
+      {/* <div className="flex flex-col items-start gap-6">
         {user && (
           <>
             <h1 className="text-3xl font-semibold">
-              {/* Welcome back {JSON.stringify(data)} */}
             </h1>
             <p className="text-gray-600">{user.email}</p>
             <div className="mt-4">
@@ -67,7 +72,7 @@ const AccountPage = async () => {
             </div>
           </>
         )}
-      </div>
+      </div> */}
     </Page>
   );
 };

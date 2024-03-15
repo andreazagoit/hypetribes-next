@@ -14,7 +14,7 @@ const links = [
   { name: "Categories", path: "/collections" },
 ];
 
-const HeaderNav = ({ user }: IProps) => {
+const HeaderNav = ({ user }: any) => {
   const pathname = usePathname();
 
   return (
@@ -33,7 +33,7 @@ const HeaderNav = ({ user }: IProps) => {
           </li>
         ))}
         {/* Display User Avatar or Login Link */}
-        {!user?.picture ? (
+        {!user ? (
           <li>
             <Link
               href="/account/login"
@@ -48,7 +48,7 @@ const HeaderNav = ({ user }: IProps) => {
           <li>
             <Link href="/account">
               <Image
-                src={user.picture}
+                src={user.entity.picture}
                 width={64}
                 height={64}
                 alt="Picture of the author"

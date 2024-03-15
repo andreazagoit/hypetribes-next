@@ -1,10 +1,14 @@
 import { create } from "zustand";
 
-type PopupType = undefined | "newCollection" | "newItem";
+type newEntityPopup = {
+  popupType: "newEntity";
+  data: any;
+};
+type ActivePopup = undefined | newEntityPopup;
 
 const usePopupStore = create((set) => ({
-  popupType: undefined,
-  setPopupType: (popupType: PopupType) => set({ popupType }),
+  activePopup: undefined,
+  setActivePopup: (popup: ActivePopup) => set({ activePopup: popup }),
 }));
 
 export default usePopupStore;

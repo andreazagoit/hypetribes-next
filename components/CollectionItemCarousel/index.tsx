@@ -2,6 +2,7 @@
 import ItemCard from "@/app/CardItem";
 import { getClient } from "@/lib/client";
 import { useQuery } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import gql from "graphql-tag";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -28,12 +29,11 @@ const GET_COLLECTION = gql`
 `;
 
 const CollectionItemCarousel = ({ collectionKey }: IProps) => {
-  const { loading, error, data } = useQuery(GET_COLLECTION, {
+  const { error, data } = useSuspenseQuery<any>(GET_COLLECTION, {
     variables: { key: collectionKey },
   });
   const [page, setPage] = useState(1);
 
-  if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (

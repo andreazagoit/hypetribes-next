@@ -61,13 +61,11 @@ export const addItem = async ({ data, context }: AddItemProps) => {
       key,
       name,
       description,
-      author: user.id,
+      author: user.entity,
       images,
       releaseDate,
       releasePlatforms,
     });
-
-    console.log(newItem);
 
     await newItem.save();
 

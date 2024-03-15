@@ -33,8 +33,15 @@ interface Item {
 
 interface User {
   id: ID!;
-  name: string!;
   email: string!;
+  entity: Entity;
   role: "admin" | "editor" | "user";
+}
+
+interface Entity {
+  key: string;
+  name: string;
+  bio: string;
   picture: string;
+  collections: string[];
 }

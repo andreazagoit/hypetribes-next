@@ -41,7 +41,7 @@ export const addCollection = async ({ data, context }: AddCollectionProps) => {
     const newCollection = new CollectionModel({
       key,
       name,
-      author: user.id,
+      author: user.entity,
     });
 
     await newCollection.save();
@@ -89,7 +89,6 @@ interface GetCollectionProps {
 
 export const getCollection = async (data: GetCollectionProps) => {
   const { key } = data;
-  console.log("GETTING COLLECTION", key);
   try {
     const collection = await CollectionModel.findOne({ key });
     if (!collection) throw new Error("No collection with that key found");
@@ -153,8 +152,6 @@ export const getCollectionTimeline = async (data: GetCollectionProps) => {
         $sort: { releaseDate: 1 }, // 1 for ascending order, -1 for descending
       },
     ]);
-
-    console.log("RESULTS", result);
   } catch (error: any) {
     throw new Error(`Error getting collection: ${error.message}`);
   }

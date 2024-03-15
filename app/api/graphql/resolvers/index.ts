@@ -12,6 +12,7 @@ import {
 } from "./collection";
 import { addItem, getItem } from "./item";
 import { getUser, getUserFromContext } from "./user";
+import EntityModel from "../../models/EntityModel";
 
 const resolvers = {
   Query: {
@@ -26,6 +27,7 @@ const resolvers = {
     // comments: async (_, data) => getComments(data),
     // USER
     user: async (parent, data, context) => getUser({ context }),
+    entity: async (parent, data, context) => getEntity({ data }),
   },
   Mutation: {
     // ITEMS
@@ -34,6 +36,7 @@ const resolvers = {
     // addComment: async (_, data) => addComment(data),
     // COLLECTIONS
     addCollection: async (_, data, context) => addCollection({ data, context }),
+    addEntity: async (_, data, context) => addEntity({ data, context }),
     // TEST
     addTestData: async (parent, data, context) => addTestData({ context }),
     // USER
@@ -58,8 +61,8 @@ const resolvers = {
     }, */
     author: async (parent: any) => {
       try {
-        const user = await UserModel.findById(parent.author);
-        return user;
+        const entity = await EntityModel.findOne({ key: parent.author });
+        return entity;
       } catch (error) {
         console.error("Error fetching collection author", error);
         throw error;
@@ -136,8 +139,19 @@ const resolvers = {
     },
     author: async (parent: any) => {
       try {
-        const user = await UserModel.findById(parent.author);
-        return user;
+        const entity = await EntityModel.findOne({ key: parent.author });
+        return entity;
+      } catch (error) {
+        console.error("Error fetching collection author", error);
+        throw error;
+      }
+    },
+  },
+  User: {
+    entity: async (parent: any) => {
+      try {
+        const entity = await EntityModel.findOne({ key: parent.entity });
+        return entity;
       } catch (error) {
         console.error("Error fetching collection author", error);
         throw error;
@@ -369,4 +383,55 @@ const loginWithCredentials = async (data: LoginWithCredentialsProps) => {
     email: user.email,
     token: token,
   };
+};
+
+interface AddEntityProps {
+  data: {
+    key: string;
+    name: string;
+    bio: string;
+    picture: string;
+  };
+  context?: any;
+}
+
+export const addEntity = async ({ data }: AddEntityProps) => {
+  const { key, name, bio, picture } = data;
+
+  try {
+    // Check if an entity with that key already exists
+    const existingEntity = await EntityModel.findOne({ key });
+    if (existingEntity) {
+      throw new Error(`Entity with key '${key}' already exists.`);
+    }
+
+    // Create a new entity
+    const newEntity = new EntityModel({
+      key,
+      name,
+      bio,
+      picture,
+    });
+    await newEntity.save();
+    return newEntity;
+  } catch (error: any) {
+    throw new Error(`Error creating entity: ${error.message}`);
+  }
+};
+
+interface GetEntityProps {
+  data: {
+    key: string;
+  };
+}
+
+export const getEntity = async ({ data }: GetEntityProps) => {
+  const { key } = data;
+
+  try {
+    const entity = EntityModel.findOne({ key });
+    return entity;
+  } catch (error: any) {
+    throw new Error(`Error getting entity: ${error.message}`);
+  }
 };
