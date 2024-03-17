@@ -25,7 +25,7 @@ const GET_USER = gql`
 `;
 
 const AccountPage = async () => {
-  let user = null;
+  let user: User | undefined = undefined;
   try {
     const session = cookies().get("__session")?.value;
     const { data } = await getClient().query({
@@ -40,6 +40,8 @@ const AccountPage = async () => {
   } catch (error) {
     redirect("/account/login");
   }
+
+  if (!user) return;
 
   return (
     <Page title="Account">
