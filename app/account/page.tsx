@@ -3,10 +3,43 @@ import Page from "@/components/Page";
 import { redirect } from "next/navigation";
 import { getUserFromSession } from "@/utils/user";
 import LogoutButton from "./components/LogoutButton";
+import { cookies } from "next/headers";
+import { getClient } from "@/lib/client";
+import gql from "graphql-tag";
+
+const GET_USER = gql`
+  query User {
+    user {
+      id
+      email
+      entity {
+        id
+        key
+        name
+        bio
+        picture
+      }
+      role
+    }
+  }
+`;
 
 const AccountPage = async () => {
-  const user = await getUserFromSession();
-  if (!user) redirect("/account/login");
+  let user = null;
+  try {
+    const session = cookies().get("__session")?.value;
+    const { data } = await getClient().query({
+      query: GET_USER,
+      context: {
+        headers: {
+          authorization: `Bearer ${session}`,
+        },
+      },
+    });
+    user = data.user;
+  } catch (error) {
+    redirect("/account/login");
+  }
 
   return (
     <Page title="Account">
