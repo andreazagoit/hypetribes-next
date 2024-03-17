@@ -31,7 +31,7 @@ export default async function Home() {
   return (
     <Page title="Prossime uscite">
       {data.collectionTimeline.map((timelineElement) => (
-        <div>
+        <div key={timelineElement.id}>
           <h2 className="text-2xl font-bold mb-4">
             {moment(timelineElement.date).format("YYYY-MM-DD")}
           </h2>
