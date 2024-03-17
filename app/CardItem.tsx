@@ -14,17 +14,40 @@ const ItemCard = ({ item }: IProps) => {
       <Card>
         <div className="flex" style={{ flexDirection: "column" }}>
           <div
-            style={{ position: "relative", width: "100%", paddingTop: "100%" }}
+            style={{
+              height: "auto",
+              width: "calc(100%)",
+              position: "relative", // Add this line to make the overlay position relative to the container
+              paddingTop: "100%", // Make the height the same as the width
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundImage: `url(${item.images[0]})`,
+              backgroundSize: "cover",
+              backdropFilter: "blur(8px)", // Apply blur to the entire container including overlay
+            }}
           >
+            {/* Add the overlay */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.6)", // Adjust the opacity as needed
+                backdropFilter: "blur(4px)", // Apply blur to the overlay only
+              }}
+            ></div>
             <Image
               src={item.images[0]}
               alt="item"
               layout="fill"
               objectFit="contain"
-              style={{ borderRadius: 8 }}
+              style={{ borderRadius: 8, padding: 10 }}
             />
           </div>
-          <div>
+          <div style={{ padding: 12 }}>
             <p className="text-blue-500 text-xs text-bold mt-2">
               {moment(item.releaseDate).format("MMMM DD, YYYY")}
             </p>

@@ -44,18 +44,42 @@ const ItemsPage = async ({ params }: IProps) => {
 
   return (
     <Page>
-      <div
-        className="bg-blue-900 bg-opacity-75 backdrop-filter backdrop-blur-lg text-white dark:bg-gray-800 dark:bg-opacity-75 dark:text-white py-4 px-6"
-        style={{ borderRadius: 20 }}
-      >
-        <Container>
+      <Container>
+        <div className="bg-blue-900 bg-opacity-75 backdrop-filter backdrop-blur-lg text-white dark:bg-gray-800 dark:bg-opacity-75 dark:text-white">
           <div className="flex flex-col gap-4 sm:flex-row">
-            <img
-              src={data.item.images[0]}
-              className="h-auto w-full object-cover rounded-lg sm:w-64"
-              alt={data.item.name}
-            />
-            <div>
+            <div
+              style={{
+                height: 360,
+                width: 360,
+                position: "relative", // Add this line to make the overlay position relative to the container
+                padding: 30,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundImage: `url(${data.item.images[0]})`,
+                backgroundSize: "cover",
+                backdropFilter: "blur(8px)", // Apply blur to the entire container including overlay
+              }}
+            >
+              {/* Add the overlay */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "rgba(0, 0, 0, 0.6)", // Adjust the opacity as needed
+                  backdropFilter: "blur(4px)", // Apply blur to the overlay only
+                }}
+              ></div>
+              <img
+                src={data.item.images[0]}
+                alt={data.item.name}
+                style={{ height: "100%", zIndex: 1 }} // Ensure the image appears above the overlay
+              />
+            </div>
+            <div style={{ flex: 1 }}>
               <h1 className="text-3xl font-bold my-4">{data.item.name}</h1>
               <p className="mb-4">{data.item.description}</p>
               <p className="mb-4">
@@ -81,8 +105,8 @@ const ItemsPage = async ({ params }: IProps) => {
               </div>
             </div>
           </div>
-        </Container>
-      </div>
+        </div>
+      </Container>
     </Page>
   );
 };
