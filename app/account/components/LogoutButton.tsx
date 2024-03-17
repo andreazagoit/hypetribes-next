@@ -1,6 +1,5 @@
 "use client";
 
-import PrimaryButton from "@/components/Button";
 import { useRouter } from "next/navigation";
 
 const LogoutButton = () => {
@@ -22,7 +21,11 @@ const LogoutButton = () => {
     }
   };
 
-  return <PrimaryButton onClick={handleLogout}>Logout</PrimaryButton>;
+  return (
+    <div onClick={handleLogout} style={{ cursor: "pointer" }}>
+      Logout
+    </div>
+  );
 };
 
 export default LogoutButton;

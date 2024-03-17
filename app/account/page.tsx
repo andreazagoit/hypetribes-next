@@ -1,78 +1,80 @@
 import React from "react";
 import Page from "@/components/Page";
-import { getClient } from "@/lib/client";
-import gql from "graphql-tag";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-const GET_USER = gql`
-  query User {
-    user {
-      id
-      email
-      entity {
-        id
-        key
-        name
-        bio
-        picture
-      }
-      role
-    }
-  }
-`;
+import { getUserFromSession } from "@/utils/user";
+import LogoutButton from "./components/LogoutButton";
 
 const AccountPage = async () => {
-  const session = cookies().get("__session")?.value;
-
-  const { data } = await getClient().query({
-    query: GET_USER,
-    context: {
-      headers: {
-        authorization: `Bearer ${session}`,
-      },
-    },
-  });
-
-  const user = data.user;
+  const user = await getUserFromSession();
   if (!user) redirect("/account/login");
 
   return (
     <Page title="Account">
-      {JSON.stringify(data)}
-      {/* <div className="flex flex-col items-start gap-6">
-        {user && (
-          <>
-            <h1 className="text-3xl font-semibold">
-            </h1>
-            <p className="text-gray-600">{user.email}</p>
-            <div className="mt-4">
-              <h2 className="text-xl font-semibold">Settings</h2>
-              <div className="flex flex-col">
-                <label className="flex items-center">
-                  <input type="checkbox" className="mr-2" />
-                  Receive Notifications
-                </label>
-                <label className="flex items-center">
-                  <input type="checkbox" className="mr-2" />
-                  Dark Mode
-                </label>
-                <div className="mt-2">
-                  Language:
-                  <select className="ml-2 bg-gray-100 dark:bg-gray-800 rounded px-2 py-1">
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                  </select>
+      <div style={{ display: "flex" }}>
+        <div style={{ flex: 0.8 }}>
+          <div
+            style={{
+              height: 400,
+              width: 500,
+              borderRadius: 10,
+              padding: 20,
+              backgroundImage:
+                "linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%)",
+              border: "2px solid #ddd",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                <img
+                  src={user.entity.picture}
+                  style={{ height: 80, width: 80, borderRadius: 999 }}
+                />
+                <div style={{ marginTop: -4 }}>
+                  <h2
+                    style={{
+                      fontSize: 24,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {user.entity.name}
+                  </h2>
+                  <p style={{ marginTop: -4 }}>{user.entity.key}</p>
                 </div>
               </div>
+              <button
+                style={{
+                  fontSize: 12,
+                  border: "1px solid white",
+                  padding: "8px 16px",
+                  borderRadius: 99,
+                }}
+              >
+                Condividi
+              </button>
             </div>
-            <div className="mt-4">
+            <h3 style={{ fontSize: 18, fontWeight: "bold", marginTop: 16 }}>
+              Collections
+            </h3>
+            Non sono ancora presenti collezioni
+          </div>
+        </div>
+        <div style={{ flex: 0.2 }}>
+          <h3 style={{ fontSize: 24, fontWeight: "bold" }}>Settings</h3>
+          <div
+            style={{ border: "1px solid #fff3", borderRadius: 8, marginTop: 8 }}
+          >
+            <div style={{ padding: "8px 16px" }}>
               <LogoutButton />
             </div>
-          </>
-        )}
-      </div> */}
+          </div>
+        </div>
+      </div>
     </Page>
   );
 };

@@ -8,7 +8,6 @@ import {
   addCollection,
   getCollection,
   getCollectionTimeline,
-  getCollections,
 } from "./collection";
 import { addItem, getItem } from "./item";
 import { getUser, getUserFromContext } from "./user";
