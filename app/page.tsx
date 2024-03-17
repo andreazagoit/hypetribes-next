@@ -35,7 +35,7 @@ export default async function Home() {
           <h2 className="text-2xl font-bold mb-4">
             {moment(timelineElement.date).format("YYYY-MM-DD")}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
             {timelineElement.items.map((item) => (
               <ItemCard key={item.key} item={item} />
             ))}
