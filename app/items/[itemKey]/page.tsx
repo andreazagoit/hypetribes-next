@@ -42,7 +42,6 @@ const ItemsPage = async ({ params }: IProps) => {
     fetchPolicy: "cache-first",
   });
 
-  const { item } = data satisfies Item;
   return (
     <Page>
       <div
@@ -50,22 +49,23 @@ const ItemsPage = async ({ params }: IProps) => {
         style={{ borderRadius: 20 }}
       >
         <Container>
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row">
             <img
-              src={item.images[0]}
-              className="h-64 w-64 object-cover rounded-lg"
-              alt={item.name}
+              src={data.item.images[0]}
+              className="h-auto w-full object-cover rounded-lg sm:w-64"
+              alt={data.item.name}
             />
             <div>
-              <h1 className="text-3xl font-bold my-4">{item.name}</h1>
-              <p className="mb-4">{item.description}</p>
+              <h1 className="text-3xl font-bold my-4">{data.item.name}</h1>
+              <p className="mb-4">{data.item.description}</p>
               <p className="mb-4">
-                Release Date: {moment(item.releaseDate).format("MMMM DD, YYYY")}
+                Release Date:{" "}
+                {moment(data.item.releaseDate).format("MMMM DD, YYYY")}
               </p>
               <div className="flex items-center mb-4">
                 <p className="font-bold mr-2">Release Platforms:</p>
                 <ul>
-                  {item.releasePlatforms.map((platform, index) => (
+                  {data.item.releasePlatforms.map((platform, index) => (
                     <li key={index}>
                       <a
                         href={platform.url}
