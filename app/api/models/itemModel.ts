@@ -6,7 +6,7 @@ const itemSchema = new Schema({
   description: { type: String },
   author: { type: String, default: null },
   images: [{ type: String }],
-  releaseDate: { type: String },
+  releaseDate: { type: Date },
   releasePlatforms: {
     type: [
       {

@@ -2,8 +2,8 @@ import Container from "@/components/Container";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import React from "react";
-import Comments from "./Comments";
 import Page from "@/components/Page";
+import moment from "moment";
 
 interface IProps {
   params: {
@@ -59,7 +59,9 @@ const ItemsPage = async ({ params }: IProps) => {
             <div>
               <h1 className="text-3xl font-bold my-4">{item.name}</h1>
               <p className="mb-4">{item.description}</p>
-              <p className="mb-4">Release Date: {item.releaseDate}</p>
+              <p className="mb-4">
+                Release Date: {moment(item.releaseDate).format("MMMM DD, YYYY")}
+              </p>
               <div className="flex items-center mb-4">
                 <p className="font-bold mr-2">Release Platforms:</p>
                 <ul>

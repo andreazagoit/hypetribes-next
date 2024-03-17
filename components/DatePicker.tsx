@@ -1,18 +1,21 @@
 "use client";
+import moment from "moment";
 import React, { useState } from "react";
 
 const DatePicker = () => {
   const [selectedDate, setSelectedDate] = useState("");
 
   const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
+    const newDate = moment(event.target.value).utc().format();
+    console.log(newDate);
+    setSelectedDate(newDate);
   };
 
   return (
     <div>
       <label htmlFor="datePicker">Select a Date:</label>
       <input
-        type="date"
+        type="datetime-local"
         id="datePicker"
         value={selectedDate}
         onChange={handleDateChange}

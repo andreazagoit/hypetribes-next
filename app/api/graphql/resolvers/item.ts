@@ -27,7 +27,7 @@ interface AddItemProps {
     collections: string[];
     description?: string;
     images?: string[];
-    releaseDate?: string;
+    releaseDate?: Date;
     releasePlatforms?: {
       name: string;
       url: string;

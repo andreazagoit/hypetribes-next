@@ -13,6 +13,8 @@ import { addItem, getItem } from "./item";
 import { getUser, getUserFromContext } from "./user";
 import EntityModel from "../../models/EntityModel";
 
+const moment = require("moment");
+
 const resolvers = {
   Query: {
     // ITEMS
@@ -268,7 +270,7 @@ const addTestData = async ({ context }) => {
       description:
         "Due antichi titani, Godzilla e Kong, si scontrano in un'epica battaglia mentre gli umani svelano le loro origini intrecciate e il loro legame con i misteri dell'Isola del Teschio.",
       images: ["https://pad.mymovies.it/filmclub/2022/11/017/locandina.jpg"],
-      releaseDate: "28-03-2024",
+      releaseDate: moment("2024-03-28T09:00:00").toDate(),
       collections: ["movies_action", "movies_adventure"],
     },
     {
@@ -279,7 +281,7 @@ const addTestData = async ({ context }) => {
       images: [
         "https://movieplayer.net-cdn.it/t/images/2024/02/20/passion-dodin-bouffant_jpg_400x0_crop_q85.jpg",
       ],
-      releaseDate: "28-03-2024",
+      releaseDate: moment("2024-03-28T09:00:00").toDate(),
       collections: ["movies_romantic"],
     },
     {
@@ -288,7 +290,7 @@ const addTestData = async ({ context }) => {
       images: [
         "https://m.media-amazon.com/images/M/MV5BMzc2M2M1YzYtMmFhMC00Mzc3LWJjOGEtMTBhYjIzMjhhMGU2XkEyXkFqcGdeQXVyOTU5MDg2OQ@@._V1_.jpg",
       ],
-      releaseDate: "03-04-2024",
+      releaseDate: moment("2024-04-03T09:00:00").toDate(),
       collections: ["movies_commedy"],
     },
     {
@@ -299,7 +301,7 @@ const addTestData = async ({ context }) => {
       images: [
         "https://www.ingenerecinema.com/wp-content/uploads/2023/12/412309022_903470824611981_6033100022399982508_n.jpg",
       ],
-      releaseDate: "11-04-2024",
+      releaseDate: moment("2024-04-11T09:00:00").toDate(),
       collections: ["movies_adventure"],
     },
     { key: "gucci-item-2", name: "Gucci 1", collections: ["gucci"] },

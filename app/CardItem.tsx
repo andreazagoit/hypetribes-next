@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Card from "@/components/Card";
 import Image from "next/image";
+import moment from "moment";
 
 interface IProps {
   item: Item;
@@ -25,7 +26,7 @@ const ItemCard = ({ item }: IProps) => {
           </div>
           <div>
             <p className="text-blue-500 text-xs text-bold mt-2">
-              {item.releaseDate}
+              {moment(item.releaseDate).format("MMMM DD, YYYY")}
             </p>
             <h1 className="font-bold mb-2">{item.name}</h1>
             <p className="mb-2 text-sm">{item.description}</p>

@@ -74,9 +74,11 @@ const typeDefs = gql`
     description: String
     author: Entity
     images: [String]!
-    releaseDate: String
+    releaseDate: Date
     releasePlatforms: [RelasePlatform]!
   }
+
+  scalar Date
 
   type Comment {
     id: ID!
