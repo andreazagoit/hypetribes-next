@@ -112,6 +112,9 @@ const resolvers = {
             $replaceRoot: { newRoot: "$item" },
           },
           {
+            $sort: { releaseDate: 1 }, // 1 for ascending order, -1 for descending order
+          },
+          {
             $addFields: {
               id: "$_id",
             },
