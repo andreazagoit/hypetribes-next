@@ -62,13 +62,14 @@ const HeaderNav = ({ user }: any) => {
                 className={`${styles.headerNavLink} ${
                   "/account/login" === pathname ? styles.active : ""
                 }`}
+                prefetch
               >
                 Login
               </Link>
             </li>
           ) : (
             <li>
-              <Link href="/account">
+              <Link href="/account" prefetch>
                 <Image
                   src={user.entity.picture}
                   width={64}
@@ -133,11 +134,16 @@ const HeaderNav = ({ user }: any) => {
             >
               {links.map(({ name, path }) => (
                 <li key={path} style={{ fontSize: 24 }}>
-                  <Link href={path} onClick={() => setOpen(false)}>
+                  <Link href={path} onClick={() => setOpen(false)} prefetch>
                     {name}
                   </Link>
                 </li>
               ))}
+              <li key="account" style={{ fontSize: 24 }}>
+                <Link href="/account" onClick={() => setOpen(false)} prefetch>
+                  Account
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
