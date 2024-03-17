@@ -104,7 +104,7 @@ export const getCollectionTimeline = async (data: GetCollectionProps) => {
     const result = await CollectionModel.aggregate([
       // Match the document with the provided collection key
       {
-        $match: { key: key },
+        $match: { key },
       },
       // Perform recursive lookup to fetch all items in this collection and its children
       {
@@ -130,28 +130,43 @@ export const getCollectionTimeline = async (data: GetCollectionProps) => {
       },
       // Unwind the items array
       { $unwind: "$items" },
-      // Group to combine all items into a single array
+      // Remove duplicates before grouping
       {
         $group: {
-          _id: "$items.key", // Group by a unique identifier field
-          item: { $first: "$items" }, // Keep the first occurrence of each item
+          _id: "$items._id", // Group by item ID to remove duplicates
+          id: { $first: "$items._id" }, // Keep one ID for each group
+          items: { $addToSet: "$items" }, // Add items to a set to remove duplicates
         },
       },
-      // Replace root to reshape the output
+      // Unwind the grouped items
+      { $unwind: "$items" },
+      // Sort items by releaseDate
+      { $sort: { "items.releaseDate": 1 } },
+      // Group items by their releaseDate
       {
-        $replaceRoot: { newRoot: "$item" },
-      },
-      // Add fields if necessary
-      {
-        $addFields: {
-          id: "$_id",
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$items.releaseDate" },
+          },
+          id: {
+            $first: {
+              $dateToString: { format: "%Y-%m-%d", date: "$items.releaseDate" },
+            },
+          },
+          date: { $first: "$items.releaseDate" },
+          items: {
+            $push: { $mergeObjects: ["$items", { id: "$items._id" }] },
+          },
         },
       },
-      // Sort by releaseDate
-      {
-        $sort: { releaseDate: 1 }, // 1 for ascending order, -1 for descending
-      },
+
+      // Sort the result by releaseDate
+      { $sort: { date: 1 } },
     ]);
+
+    console.log("results", result[1]);
+
+    return result;
   } catch (error: any) {
     throw new Error(`Error getting collection: ${error.message}`);
   }

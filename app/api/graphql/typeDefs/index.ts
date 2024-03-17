@@ -7,7 +7,7 @@ const typeDefs = gql`
     mainCollections: [Collection]!
     collections: [Collection]!
     collection(key: String!): Collection!
-    collectionTimeline(key: String!): Collection!
+    collectionTimeline(key: String!): [CollectionTimeline]!
     comments(id: ID!): [Comment]!
     user: User!
     entity(key: String!): Entity!
@@ -44,6 +44,12 @@ const typeDefs = gql`
       bio: String
       picture: String
     ): Entity!
+  }
+
+  type CollectionTimeline {
+    id: String!
+    date: Date!
+    items: [Item]!
   }
 
   input RelasePlatformInput {

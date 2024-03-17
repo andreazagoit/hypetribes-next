@@ -281,7 +281,7 @@ const addTestData = async ({ context }) => {
       images: [
         "https://movieplayer.net-cdn.it/t/images/2024/02/20/passion-dodin-bouffant_jpg_400x0_crop_q85.jpg",
       ],
-      releaseDate: moment("2024-03-28T09:00:00").toDate(),
+      releaseDate: moment("2024-03-28T09:30:00").toDate(),
       collections: ["movies_romantic"],
     },
     {
