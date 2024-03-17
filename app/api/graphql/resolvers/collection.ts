@@ -164,8 +164,6 @@ export const getCollectionTimeline = async (data: GetCollectionProps) => {
       { $sort: { date: 1 } },
     ]);
 
-    console.log("results", result[1]);
-
     return result;
   } catch (error: any) {
     throw new Error(`Error getting collection: ${error.message}`);

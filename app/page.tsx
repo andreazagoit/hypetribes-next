@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic";
 import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
-import CollectionCard from "./CollectionCard";
 import ItemCard from "./CardItem";
 import moment from "moment";
 
