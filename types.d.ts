@@ -45,3 +45,9 @@ interface Entity {
   picture: string;
   collections: string[];
 }
+
+interface TimelineElement {
+  id: string;
+  date: string;
+  items: Item[];
+}

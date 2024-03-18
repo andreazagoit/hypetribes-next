@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import Container from "./Container";
-import DatePicker from "./DatePicker";
 import NotificationProvider from "./NotificationProvider";
 
 interface PageProps {
@@ -12,7 +11,6 @@ interface PageProps {
 const Page = ({ title, actions, children }: PageProps) => {
   return (
     <main className="pt-24 pb-20">
-      {/* <DatePicker /> */}
       <NotificationProvider />
       <Container>
         <div

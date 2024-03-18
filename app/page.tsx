@@ -2,8 +2,7 @@ export const dynamic = "force-dynamic";
 import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
-import ItemCard from "./CardItem";
-import moment from "moment";
+import TimelineSection from "@/components/TimelineSection";
 
 const GET_COLLECTION_TIMELINE = gql`
   query CollectionTimeline($key: String!) {
@@ -30,17 +29,11 @@ export default async function Home() {
 
   return (
     <Page title="Prossime uscite">
-      {data.collectionTimeline.map((timelineElement) => (
-        <div key={timelineElement.id}>
-          <h2 className="text-2xl font-bold mb-4">
-            {moment(timelineElement.date).format("YYYY-MM-DD")}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-            {timelineElement.items.map((item) => (
-              <ItemCard key={item.key} item={item} />
-            ))}
-          </div>
-        </div>
+      {data.collectionTimeline.map((timelineElement: TimelineElement) => (
+        <TimelineSection
+          key={timelineElement.id}
+          timelineElement={timelineElement}
+        />
       ))}
     </Page>
   );
