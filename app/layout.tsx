@@ -6,6 +6,9 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Header from "@/components/Header";
 import PopupProvider from "@/components/PopupProvider";
 import NotificationProvider from "@/components/NotificationProvider";
+import moment from "moment";
+import "moment/locale/it";
+moment.locale("it");
 
 const inter = Inter({ subsets: ["latin"] });
 

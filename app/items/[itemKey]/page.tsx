@@ -80,7 +80,16 @@ const ItemsPage = async ({ params }: IProps) => {
               />
             </div>
             <div style={{ flex: 1 }}>
-              <h1 className="text-3xl font-bold my-4">{data.item.name}</h1>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h1 className="text-3xl font-bold my-4">{data.item.name}</h1>
+                <div>In arrivo {moment(data.item.releaseDate).fromNow()}</div>
+              </div>
               <p className="mb-4">{data.item.description}</p>
               <p className="mb-4">
                 Release Date:{" "}

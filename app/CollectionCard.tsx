@@ -8,7 +8,7 @@ interface IProps {
 const CollectionCard = ({ collection }: IProps) => {
   return (
     <Link href={`/collections/${collection.key}`}>
-      <Card>
+      <Card style={{ padding: 20, textAlign: "center" }}>
         <h2 className="text-lg font-semibold">{collection.name}</h2>
       </Card>
     </Link>
