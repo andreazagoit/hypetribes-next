@@ -48,21 +48,27 @@ const CollectionsPage = async ({ params }: IProps) => {
     fetchPolicy: "cache-first",
   });
 
+  console.log(data);
+
   return (
     <Page
       title={data.collection.name}
       actions={
         <>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <p>{data.collection.author.name}</p>
-            <Image
-              src={data.collection.author.picture}
-              width={64}
-              height={64}
-              alt="Picture of the author"
-              className="h-10 w-10 rounded-full"
-            />
-          </div>
+          {data.collection.author && (
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+            >
+              <p>{data.collection.author.name}</p>
+              <Image
+                src={data.collection.author.picture}
+                width={64}
+                height={64}
+                alt="Picture of the author"
+                className="h-10 w-10 rounded-full"
+              />
+            </div>
+          )}
         </>
       }
     >

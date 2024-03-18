@@ -5,6 +5,7 @@ const entitySchema = new Schema({
   name: { type: String, required: true },
   bio: { type: String },
   picture: { type: String },
+  mainCollection: { type: String, required: true },
   collections: [{ type: String }],
 });
 

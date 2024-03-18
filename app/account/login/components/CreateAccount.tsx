@@ -2,7 +2,7 @@
 
 import { auth } from "@/lib/firebase/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { RequireEntityStep, Step } from "./AuthCard";
 
@@ -31,6 +31,10 @@ const CreateAccount = ({ step, changeStep }: IProps) => {
     });
 
     const resBody = await response.json();
+
+    if (resBody.status === "logged") {
+      router.push("/");
+    }
   };
 
   return (

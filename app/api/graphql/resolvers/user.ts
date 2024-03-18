@@ -21,6 +21,15 @@ export const getUserFromContext = (context) => {
   }
 };
 
+export const getUserFromToken = (token) => {
+  try {
+    const user = verifyUserToken(token);
+    return user as User;
+  } catch (error) {
+    throw new Error("Wrong user");
+  }
+};
+
 interface LoginWithGoogle {
   accessToken: string;
 }

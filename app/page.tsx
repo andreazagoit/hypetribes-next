@@ -3,6 +3,7 @@ import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
 import TimelineSection from "@/components/TimelineSection";
+import { getCurrentUser } from "@/lib/userServices";
 
 const GET_COLLECTION_TIMELINE = gql`
   query CollectionTimeline($key: String!) {
@@ -21,20 +22,27 @@ const GET_COLLECTION_TIMELINE = gql`
 `;
 
 export default async function Home() {
+  const user = getCurrentUser();
   const { data } = await getClient().query({
     query: GET_COLLECTION_TIMELINE,
-    variables: { key: "movies" },
+    variables: { key: `@${user?.entity}` },
     fetchPolicy: "cache-first",
   });
 
   return (
     <Page title="Prossime uscite">
-      {data.collectionTimeline.map((timelineElement: TimelineElement) => (
-        <TimelineSection
-          key={timelineElement.id}
-          timelineElement={timelineElement}
-        />
-      ))}
+      {user ? (
+        <>
+          {data.collectionTimeline.map((timelineElement: TimelineElement) => (
+            <TimelineSection
+              key={timelineElement.id}
+              timelineElement={timelineElement}
+            />
+          ))}
+        </>
+      ) : (
+        <p>Accedi per create salvare le tue uscite</p>
+      )}
     </Page>
   );
 }

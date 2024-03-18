@@ -1,5 +1,7 @@
+import { getCurrentUser } from "@/lib/userServices";
 import CollectionModel from "../../models/CollectionModel";
 import { getUserFromContext } from "./user";
+import EntityModel from "../../models/EntityModel";
 
 export const getCollections = async () => {
   const mainCollectionsKeys = ["movie", "luxury"];
@@ -14,7 +16,7 @@ export const getCollections = async () => {
   }
 };
 
-interface AddCollectionProps {
+interface AddCollectionFromUserProps {
   data: {
     key: string;
     name: string;
@@ -23,7 +25,10 @@ interface AddCollectionProps {
   context: any;
 }
 
-export const addCollection = async ({ data, context }: AddCollectionProps) => {
+export const addCollectionFromUser = async ({
+  data,
+  context,
+}: AddCollectionFromUserProps) => {
   const { key, name, collections = [] } = data;
 
   const user = getUserFromContext(context);
@@ -57,6 +62,34 @@ export const addCollection = async ({ data, context }: AddCollectionProps) => {
     return newCollection;
   } catch (error: any) {
     throw new Error(`Error creating item: ${error.message}`);
+  }
+};
+
+interface AddCollectionProps {
+  data: {
+    key: string;
+    name: string;
+    collections?: string[];
+  };
+  entity: string;
+}
+
+export const AddCollection = async ({ data, entity }: AddCollectionProps) => {
+  const { key, name } = data;
+
+  try {
+    // Data is valid, create the collection
+    const newCollection = new CollectionModel({
+      key,
+      name,
+      author: entity,
+    });
+
+    await newCollection.save();
+
+    return newCollection;
+  } catch (error: any) {
+    throw new Error(`Error creating collection: ${error.message}`);
   }
 };
 
@@ -165,6 +198,53 @@ export const getCollectionTimeline = async (data: GetCollectionProps) => {
     ]);
 
     return result;
+  } catch (error: any) {
+    throw new Error(`Error getting collection: ${error.message}`);
+  }
+};
+
+interface FollowCollectionProps {
+  data: {
+    key: string;
+  };
+  context: any;
+}
+
+export const followCollection = async ({
+  data,
+  context,
+}: FollowCollectionProps) => {
+  const { key } = data;
+  const user = getUserFromContext(context);
+
+  try {
+    const foundCollction = await CollectionModel.findOne({ key });
+    if (!foundCollction) throw new Error(`Collection missing`);
+    const mainCollection = await CollectionModel.findOne({
+      key: `@${user.entity}`,
+    });
+    if (!mainCollection) {
+      throw new Error("Main collection not found.");
+    }
+
+    // Check if the key is already present in the mainCollection.collections array
+    const collectionIndex = mainCollection.collections.indexOf(key);
+
+    if (collectionIndex === -1) {
+      // If the key is not present, add it to the collections array
+      await CollectionModel.updateOne(
+        { key: `@${user.entity}` },
+        { $addToSet: { collections: key } }
+      );
+    } else {
+      // If the key is already present, remove it from the collections array
+      await CollectionModel.updateOne(
+        { key: `@${user.entity}` },
+        { $pull: { collections: key } }
+      );
+    }
+
+    return foundCollction;
   } catch (error: any) {
     throw new Error(`Error getting collection: ${error.message}`);
   }

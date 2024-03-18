@@ -5,7 +5,9 @@ import ItemModel from "../../models/itemModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import {
-  addCollection,
+  AddCollection,
+  addCollectionFromUser,
+  followCollection,
   getCollection,
   getCollectionTimeline,
 } from "./collection";
@@ -36,8 +38,11 @@ const resolvers = {
     // COMMENTS
     // addComment: async (_, data) => addComment(data),
     // COLLECTIONS
-    addCollection: async (_, data, context) => addCollection({ data, context }),
+    addCollection: async (_, data, context) =>
+      addCollectionFromUser({ data, context }),
     addEntity: async (_, data, context) => addEntity({ data, context }),
+    followCollection: async (_, data, context) =>
+      followCollection({ data, context }),
     // TEST
     addTestData: async (parent, data, context) => addTestData({ context }),
     // USER
@@ -231,9 +236,9 @@ const addTestData = async ({ context }) => {
   const user = getUserFromContext(context);
 
   // Reset database
-  await CollectionModel.deleteMany({});
+  /* await CollectionModel.deleteMany({});
   await ItemModel.deleteMany({});
-  await CommentModel.deleteMany({});
+  await CommentModel.deleteMany({}); */
 
   const collectionsToAdd = [
     { key: "luxury", name: "Luxury" },
@@ -260,7 +265,7 @@ const addTestData = async ({ context }) => {
   ];
 
   for (const collection of collectionsToAdd) {
-    await addCollection({ data: collection, context });
+    await addCollectionFromUser({ data: collection, context });
   }
 
   const itemsToAdd = [
@@ -416,7 +421,16 @@ export const addEntity = async ({ data }: AddEntityProps) => {
       bio,
       picture,
     });
+
+    const userCollection = await AddCollection({
+      data: { key: `@${key}`, name },
+      entity: newEntity.key,
+    });
+
+    newEntity.mainCollection = userCollection.key;
+    await userCollection.save();
     await newEntity.save();
+
     return newEntity;
   } catch (error: any) {
     throw new Error(`Error creating entity: ${error.message}`);

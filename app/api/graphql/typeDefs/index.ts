@@ -9,7 +9,7 @@ const typeDefs = gql`
     collection(key: String!): Collection!
     collectionTimeline(key: String!): [CollectionTimeline]!
     comments(id: ID!): [Comment]!
-    user: User!
+    user: User
     entity(key: String!): Entity!
   }
 
@@ -24,6 +24,7 @@ const typeDefs = gql`
       releasePlatforms: [RelasePlatformInput]
     ): Item!
     addComment(id: ID!, text: String!): Comment
+    followCollection(key: String!): Collection!
 
     addCollection(
       key: String!
