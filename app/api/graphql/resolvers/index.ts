@@ -241,9 +241,9 @@ const addTestData = async ({ context }) => {
   await CommentModel.deleteMany({}); */
 
   const collectionsToAdd = [
-    { key: "luxury", name: "Luxury" },
-    { key: "gucci", name: "Gucci", collections: ["luxury"] },
-    { key: "dior", name: "Dior", collections: ["luxury"] },
+    { key: "fashion", name: "Fashion" },
+    { key: "gucci", name: "Gucci", collections: ["fashion"] },
+    { key: "dior", name: "Dior", collections: ["fashion"] },
     { key: "movies", name: "Movies" },
     { key: "movies_horror", name: "Horror Movies", collections: ["movies"] },
     { key: "movies_action", name: "Action Movies", collections: ["movies"] },
@@ -309,8 +309,8 @@ const addTestData = async ({ context }) => {
       releaseDate: moment("2024-04-11T09:00:00").toDate(),
       collections: ["movies_adventure"],
     },
-    { key: "gucci-item-2", name: "Gucci 1", collections: ["gucci"] },
-    { key: "gucci-item-3", name: "Gucci 1", collections: ["gucci"] },
+    { key: "gucci-item-1", name: "Gucci 1", collections: ["gucci"] },
+    { key: "gucci-item-2", name: "Gucci 2", collections: ["gucci"] },
   ];
 
   for (const item of itemsToAdd) {
