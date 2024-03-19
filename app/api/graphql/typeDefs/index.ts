@@ -70,6 +70,7 @@ const typeDefs = gql`
     key: String!
     name: String!
     author: Entity
+    following: Boolean
     items: [Item]!
     collections: [Collection]!
   }

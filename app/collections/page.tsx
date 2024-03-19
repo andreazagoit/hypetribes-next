@@ -3,7 +3,7 @@ import Page from "@/components/Page";
 import React from "react";
 
 const CollectionsPage = () => {
-  const collections = ["fashion", "movies"];
+  const collections = ["books", "movies", "fashion"];
 
   return (
     <Page title="Categorie">

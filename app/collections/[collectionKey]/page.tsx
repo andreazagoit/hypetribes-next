@@ -1,10 +1,11 @@
-export const revalidate = 60;
-
+export const dynamic = "force-dynamic";
 import ItemCard from "@/app/CardItem";
 import CollectionCard from "@/app/CollectionCard";
+import FollowCollectionButton from "@/components/FollowCollectionButton";
 import Page from "@/components/Page";
 import { getClient } from "@/lib/client";
 import gql from "graphql-tag";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import React from "react";
 
@@ -20,6 +21,7 @@ const GET_COLLECTION = gql`
       id
       key
       name
+      following
       author {
         id
         name
@@ -42,32 +44,59 @@ const GET_COLLECTION = gql`
 
 const CollectionsPage = async ({ params }: IProps) => {
   const { collectionKey } = params;
+  const session = cookies().get("__session")?.value;
   const { data } = await getClient().query({
     query: GET_COLLECTION,
     variables: { key: collectionKey },
     fetchPolicy: "cache-first",
+    context: {
+      headers: {
+        authorization: `Bearer ${session}`,
+      },
+    },
   });
-
-  console.log(data);
 
   return (
     <Page
-      title={data.collection.name}
+      title={
+        <div style={{ marginBottom: 20 }}>
+          <h2
+            style={{ fontSize: 48, fontWeight: "bold", lineHeight: "normal" }}
+          >
+            {data.collection.name}
+          </h2>
+          <div
+            className="flex"
+            style={{ alignItems: "center", gap: 4, fontSize: 12 }}
+          >
+            <p>Created by</p>
+            {data.collection.author && (
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+              >
+                <p style={{ fontWeight: "bold" }}>
+                  {data.collection.author.name}
+                </p>
+                <Image
+                  src={data.collection.author.picture}
+                  width={64}
+                  height={64}
+                  alt="Picture of the author"
+                  className="h-4 w-4 rounded-full"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      }
       actions={
         <>
-          {data.collection.author && (
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-            >
-              <p>{data.collection.author.name}</p>
-              <Image
-                src={data.collection.author.picture}
-                width={64}
-                height={64}
-                alt="Picture of the author"
-                className="h-10 w-10 rounded-full"
-              />
-            </div>
+          {session && (
+            <FollowCollectionButton
+              following={data.collection.following}
+              collectionKey={collectionKey}
+              session={session}
+            />
           )}
         </>
       }

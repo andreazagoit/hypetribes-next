@@ -24,8 +24,9 @@ const resolvers = {
     item: async (_, data) => getItem(data),
     // COLLECTIONS
     // collections: async () => getCollections(),
-    collection: async (_, data) => getCollection(data),
-    collectionTimeline: async (_, data) => getCollectionTimeline(data),
+    collection: async (_, data, context) => getCollection({ data, context }),
+    collectionTimeline: async (_, data, context) =>
+      getCollectionTimeline({ data, context }),
     // COMMENTS
     // comments: async (_, data) => getComments(data),
     // USER
@@ -155,6 +156,19 @@ const resolvers = {
         throw error;
       }
     },
+    following: async (parent, args, context, info) => {
+      try {
+        const user = getUserFromContext(context);
+
+        // GET USER MAIN_COLLECTION
+        const mainCollection = await CollectionModel.findOne({
+          key: `@${user.entity}`,
+        });
+        return mainCollection.collections.includes(parent.key);
+      } catch (error) {
+        return null;
+      }
+    },
   },
   User: {
     entity: async (parent: any) => {
@@ -262,6 +276,7 @@ const addTestData = async ({ context }) => {
       name: "Commedy Movies",
       collections: ["movies"],
     },
+    { key: "books", name: "Books" },
   ];
 
   for (const collection of collectionsToAdd) {
@@ -309,6 +324,60 @@ const addTestData = async ({ context }) => {
       releaseDate: moment("2024-04-11T09:00:00").toDate(),
       collections: ["movies_adventure"],
     },
+    {
+      key: "furiosa-a-mad-max-saga",
+      name: "Furiosa: A Mad Max Saga",
+      description: `La storia delle origini della guerriera rinnegata, Furiosa, prima che si unisse a Mad Max in "Fury Road".`,
+      images: [
+        "https://www.metropoliscinemas.it/uploads/eventi/thumb_zoom/Furiosa__a_mad_max_saga.webp?1710503212",
+      ],
+      releaseDate: moment("2024-05-11T09:00:00").toDate(),
+      collections: ["movies_adventure"],
+    },
+    {
+      key: "book-1",
+      name: "A light in the flame. Una luce nella fiamma. Flesh and Fire. Vol. 2",
+      description: `«Tu sei l’erede delle terre e dei mari, dei cieli e dei regni. Una regina al posto di un re. Tu sei la primordiale della vita.»
+
+
+      Ora che la verità sul suo piano è venuta a galla, mandando in frantumi la fragile fiducia che si era instaurata tra lei e Nyktos, a Seraphena non resta che aggrapparsi al proprio senso del dovere. Per questo farà tutto il possibile per fermare Kolis, il falso Re degli Dei, e porre fine alla sua tirannia su Iliseum e alla minaccia che rappresenta per i mortali. Anche se questo significa seguire il piano di Nyktos. L’ultima cosa di cui entrambi hanno bisogno mentre lavorano insieme è l’innegabile, bruciante passione che continua ad accendersi tra loro. In più, Sera non può permettersi di innamorarsi del tormentato Primordiale, men che meno adesso che la sua vita non è più legata a un destino che non ha mai voluto. Ma come resistere ai ricordi del piacere che hanno condiviso e che ancora li consuma? E al desiderio irrazionale di diventare per Nyktos una Consorte di fatto e non solo di nome? Poi, mentre il pericolo che li circonda cresce e gli attacchi alle Terre d’Ombra si intensificano, a un tratto si presenta un rischio del tutto nuovo: il potere primordiale della Vita sta crescendo dentro di lei e preme per manifestarsi. E Seraphena sa che senza l’amore di Nyktos – un’emozione che lui non è in grado di provare – non sopravvivrà all’Ascensione. Sempre che riesca ad arrivarci, naturalmente, perché il tempo sta per scadere… per lei e per i regni.`,
+      images: [
+        "https://www.lafeltrinelli.it/images/9791259853233_0_536_0_75.jpg",
+      ],
+      releaseDate: moment("2024-03-26T09:00:00").toDate(),
+      collections: ["books"],
+    },
+    {
+      key: "book-2",
+      name: "Liberi come il vento",
+      description: `Quando il vento del nord porta con sé una piuma d’aquila grigia, un grande cambiamento sta per arrivare: questa è la leggenda che gli antenati di Hurst Paytah tramandano da generazioni. Lui non ci ha mai creduto, perché il suo destino è stato stabilito sin da piccolo. Da orfano indesiderato perché solo per metà nativo, è riuscito a conquistare la fiducia della tribù ed è stato scelto per diventare capo. Hurst, però, è solo un ragazzo, e si sente inadatto a comandare perché è tutto fuorché calmo e razionale. Per fortuna c’è Nive che, con i suoi timidi sorrisi e i suoi guanti rossi, gli ha mostrato che la gentilezza può sciogliere anche il ghiaccio più duro e che si può essere completi anche quando ci si sente a metà. Eppure, ora che lei è lontana per studiare al college, Hurst si sente sempre più insicuro e il vecchio dubbio di non essere all’altezza lo tormenta. Come se non bastasse, sul suo comodino compare all’improvviso una piuma d’aquila grigia. Mentre ne osserva i riflessi, si sente invadere dalla paura: forse il destino suo e di Nive non è di restare legati per tutta la vita; forse basterà una folata di vento per distruggerli. Ora Hurst deve scoprire che solo chi affronta la vertigine ha la forza per spiccare il volo.`,
+      images: [
+        "https://www.lafeltrinelli.it/images/9788811010999_0_536_0_75.jpg",
+      ],
+      releaseDate: moment("2024-03-26T09:00:00").toDate(),
+      collections: ["books"],
+    },
+    {
+      key: "book-3",
+      name: "Il mio sbaglio più grande. Corrupt. Limited edition. Devil’s night series",
+      description: `Si chiama Michael Crist. È il fratello maggiore del mio ragazzo ed è come quei film dell'orrore che guardi coprendoti gli occhi. È bellissimo, forte, e assolutamente terrificante. Non mi vede neppure. Ma io l'ho notato. L'ho visto, l'ho sentito. Quello che ha fatto, i misfatti che ha nascosto. E non so quanto ancora riuscirò a tenere segrete le cose che gli ho visto fare. Si chiama Erika Fane, ma tutti la chiamano Rika. È la ragazza di mio fratello ed è sempre in giro per casa nostra, sempre a cena con noi. Riesco a percepire la sua paura, e anche se non possiedo il suo corpo, so di avere la sua mente. È l'unica cosa che voglio. Tra poco andrà da sola al college. Nella mia città. Indifesa. L'occasione è incredibilmente allettante. Perché tre anni fa per colpa sua alcuni miei amici sono finiti in prigione, e ora sono usciti. Abbiamo aspettato. Siamo stati pazienti. E ora tutti i suoi incubi stanno per avverarsi.`,
+      images: [
+        "https://www.lafeltrinelli.it/images/9788822786654_0_536_0_75.jpg",
+      ],
+      releaseDate: moment("2024-03-26T09:00:00").toDate(),
+      collections: ["books"],
+    },
+    {
+      key: "book-4",
+      name: "Incantevole tentazione. Badlands",
+      description: `È un lunedì grigio e piovoso quello in cui Juliet, diciassettenne ribelle e capricciosa, si trasferisce a casa del nuovo compagno della madre, dove vive anche Alexander, il figlio di lui. Affascinante ed enigmatico, il nuovo coinquilino è un mistero dagli occhi di tenebra e dal passato complicato, ed è l'esatto opposto di Juliet: lei fatica a prendere la sufficienza, lui ha ottimi voti; lei ama il gossip e le feste, lui preferisce starsene rintanato in camera sua con un libro. Tra i due è subito guerra aperta, ma ben presto i battibecchi si trasformano in baci infuocati scambiati di nascosto, all'insaputa dei genitori. Tuttavia, Alexander è uno scrigno pieno di segreti di cui nessuno possiede la chiave, nemmeno Juliet. Col passare del tempo, però, l'attrazione e la passione alla ragazza non bastano più e desidera l'accesso al suo cuore. Alexander sarà disposto a concederglielo oppure rischierà di perderla per sempre? Alexander è un mistero dagli occhi di tenebra. Juliet desidera scoprire ogni suo segreto.`,
+      images: [
+        "https://www.lafeltrinelli.it/images/9788822784179_0_536_0_75.jpg",
+      ],
+      releaseDate: moment("2024-03-26T09:00:00").toDate(),
+      collections: ["books"],
+    },
+
     { key: "gucci-item-1", name: "Gucci 1", collections: ["gucci"] },
     { key: "gucci-item-2", name: "Gucci 2", collections: ["gucci"] },
   ];

@@ -117,11 +117,15 @@ export const checkCollectionsExist = async (collectionsKeys: string[]) => {
 };
 
 interface GetCollectionProps {
-  key: string;
+  data: {
+    key: string;
+  };
+  context?: any;
 }
 
-export const getCollection = async (data: GetCollectionProps) => {
+export const getCollection = async ({ data, context }: GetCollectionProps) => {
   const { key } = data;
+
   try {
     const collection = await CollectionModel.findOne({ key });
     if (!collection) throw new Error("No collection with that key found");
@@ -131,7 +135,16 @@ export const getCollection = async (data: GetCollectionProps) => {
   }
 };
 
-export const getCollectionTimeline = async (data: GetCollectionProps) => {
+interface GetCollectionTimelineProps {
+  data: {
+    key: string;
+  };
+  context?: any;
+}
+
+export const getCollectionTimeline = async ({
+  data,
+}: GetCollectionTimelineProps) => {
   const { key } = data;
   try {
     const result = await CollectionModel.aggregate([
